@@ -1,0 +1,17 @@
+Push integers on queue and dump contents:
+Billy
+Sally
+Dan
+Alex
+Brian
+
+Read contents using head() and dequeue():
+Billy
+Sally
+Dan
+Alex
+Brian
+
+Attempt dequeue() of empty queue:
+Caught exception:
+Queue<T>::dequeue(): attempt to dequeue an empty Queue.

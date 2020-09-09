@@ -77,14 +77,16 @@ public:
   void dump() const;   // Dump contents of the linked list
 
 private:
-  Node<T> *_head;
+  Node<T>* _head;
 
   // ***************************************************
   // Any private helper functions must be delared here!
   // ***************************************************
-  
+
+
 };
 
+// contructor
 template <class T>
 Queue<T>::Queue() {
   _head = nullptr;
@@ -96,19 +98,15 @@ Queue<T>::Queue(const Queue<T>& rhs) {
   // ********************************
   // Implement the copy constructor
   // ********************************
-  
-  _head = nullptr;
 
-  // create node pointer 
   Node<T>* curr = rhs._head;
 
-  while(curr != nullptr){
-      // filler coder
-      curr = curr;
-    
+  while(curr != nullptr) {
 
-    // iterate to next node
+    enqueue(curr->_data);
+
     curr = curr->_next;
+
   }
 }
 
@@ -119,7 +117,7 @@ const Queue<T>& Queue<T>::operator=(const Queue<T>& rhs) {
   // Implement the assignment operator
   // **********************************
   
-  if(&rhs != this){
+  if(&rhs != this) {
 
     // deallocate memory
     delete this;
@@ -130,20 +128,19 @@ const Queue<T>& Queue<T>::operator=(const Queue<T>& rhs) {
     // create node pointer
     Node<T>* curr = rhs._head;
 
-    while(curr != nullptr){
-      // for loop - multiple occurrences of word
-      for(int i=0; i<curr->_data; i++){
-        // insert data into queue
+    while(curr != nullptr) {
+      
+      enqueue(curr->_data);
 
-        // filler code
-        i=i;
-      }
-
-      // iterate to next node
-      curr->_next;
+      //iterate to next node
+      curr = curr->_next;
     }
   }
+
+  return *this;
 }
+
+
 
 template <class T>
 Queue<T>::~Queue() {
@@ -153,13 +150,12 @@ Queue<T>::~Queue() {
   // *************************
   
   Node<T>* curr = _head;
-  
   while(_head != nullptr){
     // move tracker to next node
-    _head->_next;
-    // delete prev node 
+    _head = _head->_next;
+    // delete prev node
     delete curr;
-    // set curr to _head node 
+    // set curr to m_head node
     curr = _head;
   }
 

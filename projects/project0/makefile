@@ -16,16 +16,16 @@ run1:
 		./proj0 driver.txt
 
 run2:
-		./mytest driver.txt
+		./mytest driver2.txt
 
 val1:
 		valgrind ./proj0 driver.txt
 
 val2:
-		valgrind ./mytest driver.txt
+		valgrind ./mytest driver2.txt
 
 gdb1:
-		gdb -tui --args ./proj0 driver.txt
+		gdb --quiet -tui --args ./proj0 driver.txt
 
 gdb2:
-		gdb -tui --args ./mytest driver.txt
+		gdb --quiet -tui --args ./mytest driver2.txt
