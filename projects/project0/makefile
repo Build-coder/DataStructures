@@ -13,19 +13,19 @@ clean:
 		rm *output*
 
 run1:
-		./proj0 driver.txt
+		./proj0
 
 run2:
-		./mytest driver2.txt
+		./mytest
 
 val1:
-		valgrind ./proj0 driver.txt
+		valgrind --leak-check=full ./proj0
 
 val2:
-		valgrind ./mytest driver2.txt
+		valgrind --track-origins=yes --leak-check=full ./mytest
 
 gdb1:
-		gdb --quiet -tui --args ./proj0 driver.txt
+		gdb --quiet -tui --args ./proj0
 
 gdb2:
-		gdb --quiet -tui --args ./mytest driver2.txt
+		gdb --quiet -tui --args ./mytest

@@ -140,8 +140,6 @@ const Queue<T>& Queue<T>::operator=(const Queue<T>& rhs) {
   return *this;
 }
 
-
-
 template <class T>
 Queue<T>::~Queue() {
 
@@ -150,9 +148,12 @@ Queue<T>::~Queue() {
   // *************************
   
   Node<T>* curr = _head;
+
   while(_head != nullptr){
     // move tracker to next node
     _head = _head->_next;
+    // set curr's next to nullptr
+    curr->_next = nullptr;
     // delete prev node
     delete curr;
     // set curr to m_head node
