@@ -98,6 +98,7 @@ Queue<T>::Queue(const Queue<T>& rhs) {
   // ********************************
   // Implement the copy constructor
   // ********************************
+  
 
   Node<T>* curr = rhs._head;
 
@@ -108,6 +109,7 @@ Queue<T>::Queue(const Queue<T>& rhs) {
     curr = curr->_next;
 
   }
+
 }
 
 template <class T>
@@ -117,23 +119,36 @@ const Queue<T>& Queue<T>::operator=(const Queue<T>& rhs) {
   // Implement the assignment operator
   // **********************************
   
-  if(&rhs != this) {
+  // protection against self-assignment
+  if(this != &rhs) {
 
-    // deallocate memory
-    delete this;
+    // delete data
+    
+    Node<T>* curr = _head;
 
-    // initialize _head
+    while(_head != nullptr){
+      // move tracker to next node
+      _head = _head->_next;
+      // delete prev node
+      delete curr;
+      // set curr to nullptr
+      curr = nullptr;
+      // set curr to m_head node
+      curr = _head;
+    }
+
     _head = nullptr;
 
-    // create node pointer
-    Node<T>* curr = rhs._head;
+    // copy data
 
-    while(curr != nullptr) {
+    Node<T>* temp = _head;
+
+    while(temp != nullptr) {
       
-      enqueue(curr->_data);
+      enqueue(temp->_data);
 
       //iterate to next node
-      curr = curr->_next;
+      temp = temp->_next;
     }
   }
 
@@ -152,14 +167,14 @@ Queue<T>::~Queue() {
   while(_head != nullptr){
     // move tracker to next node
     _head = _head->_next;
-    // set curr's next to nullptr
-    curr->_next = nullptr;
     // delete prev node
     delete curr;
+    // set curr to nullptr
+    curr = nullptr;
     // set curr to m_head node
     curr = _head;
   }
-
+  
   _head = nullptr;
 }
 
@@ -212,5 +227,6 @@ void Queue<T>::dump() const {
     nodePtr = nodePtr->_next;
   }
 }
+
 
 #endif

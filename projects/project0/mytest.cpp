@@ -2,6 +2,9 @@
 
 // mytest.cpp: a unit test to test copy and assignment functions in queue.h.
 
+// #include <exception>
+// using std::range_error;
+
 #include <iostream>
 #include "queue.h"
 
@@ -58,76 +61,79 @@ using namespace std;
         // check that a copy is made. new queue should contain same data as source
 
         // call copy constructor
-        Queue<string>* copiedQueue = new Queue<string>(firstQueue);
+        Queue<string> copiedQueue = firstQueue;
 
         cout << "Contents of original queue: " << endl;
         firstQueue.dump();
         cout << endl;
 
         cout << "Contents of copied queue: " << endl;
-        copiedQueue->dump();
+        copiedQueue.dump();
         cout << endl;
 
-        // call assignment oper
-        Queue<string>* assignQueue = new Queue<string>();
-        *assignQueue = secondQueue;
-
-        cout << "Contents of original queue: " << endl;
-        secondQueue.dump();
-        cout << endl;
-
-        cout << "Contents of assigned queue: " << endl;
-        assignQueue->dump();
-        cout << endl;
-
-
-        // check copy is deep. modifying either queue should
-        // not change the other
+        // // call assignment oper
+        Queue<string> assignQueue;
 
         for (int i = 1; i <= 5; i++) {
-            copiedQueue->enqueue("Harry Potter");
-            assignQueue->enqueue("Bugs Bunny");
+            assignQueue.enqueue(to_string(i));
         }
 
-        cout << "Contents of copied queue after change" << endl;
-        copiedQueue->dump();
-        cout << endl;
+        assignQueue = secondQueue;
 
-        cout << "Contents of original queue" << endl;
-        firstQueue.dump();
-        cout << endl;
+        // cout << "Contents of original queue: " << endl;
+        // secondQueue.dump();
+        // cout << endl;
 
-        cout << "Contents of assignment oper queue after change" << endl;
-        assignQueue->dump();
-        cout << endl;
-
-        cout << "Contents of original queue" << endl;
-        secondQueue.dump();
-        cout << endl;
-
-        // check edge cases. do they work correctly if the source queue is empty?
-
-        Queue<string> thirdQueue;
-
-        cout << "Contents of original queue: " << endl;
-        thirdQueue.dump();
-        cout << endl;
-
-        // call copy constructor
-        Queue<string>* copiedEmptyQueue = new Queue<string>(thirdQueue);
-
-        cout << "Contents of copied empty queue: " << endl;
-        copiedEmptyQueue->dump();
-        cout << endl;
+        // cout << "Contents of assigned queue: " << endl;
+        // assignQueue->dump();
+        // cout << endl;
 
 
-        // for the assignment operator, check that you have guarded against 
-        // self-assignment
+        // // check copy is deep. modifying either queue should
+        // // not change the other
+
+        // for (int i = 1; i <= 5; i++) {
+        //     copiedQueue.enqueue("Harry Potter");
+        //     assignQueue->enqueue("Bugs Bunny");
+        // }
+
+        // cout << "Contents of copied queue after change" << endl;
+        // copiedQueue.dump();
+        // cout << endl;
+
+        // cout << "Contents of original queue" << endl;
+        // firstQueue.dump();
+        // cout << endl;
+
+        // cout << "Contents of assignment oper queue after change" << endl;
+        // assignQueue->dump();
+        // cout << endl;
+
+        // cout << "Contents of original queue" << endl;
+        // secondQueue.dump();
+        // cout << endl;
+
+        // // check edge cases. do they work correctly if the source queue is empty?
+
+        // Queue<string> thirdQueue;
+
+        // cout << "Contents of empty queue: " << endl;
+        // thirdQueue.dump();
+        // cout << endl;
+
+        // // call copy constructor
+        // Queue<string>* copiedEmptyQueue = new Queue<string>(thirdQueue);
+
+        // cout << "Contents of copied empty queue: " << endl;
+        // copiedEmptyQueue->dump();
+        // cout << endl;
 
 
-        delete copiedQueue;
-        delete assignQueue;
+        // // for the assignment operator, check that you have guarded against 
+        // // self-assignment
 
+        // delete assignQueue;
+        // delete copiedEmptyQueue;
 
         cout << "------------------------------" << endl << endl;
         
@@ -135,7 +141,7 @@ using namespace std;
 
     int main() {
 
-            cout << "*****************************************************************" << endl;
+        cout << "*****************************************************************" << endl;
         cout << " SSSS  U   U  BBBB   N    N   AAA   U   U  TTTTT  II  CCCC   AAA " << endl;
         cout << " S     U   U  B   B  NN   N  A   A  U   U    T    II  C     A   A" << endl;
         cout << " S     U   U  B   B  N N  N  A   A  U   U    T    II  C     A   A" << endl;
