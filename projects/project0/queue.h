@@ -141,7 +141,7 @@ const Queue<T>& Queue<T>::operator=(const Queue<T>& rhs) {
 
     // copy data
 
-    Node<T>* temp = _head;
+    Node<T>* temp = rhs._head;
 
     while(temp != nullptr) {
       

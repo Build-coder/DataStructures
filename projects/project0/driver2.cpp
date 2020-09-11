@@ -104,12 +104,13 @@ int main() {
   cout << "\nDisplay contents of copied queue: \n";
   intQueue.dump();
   
-  // check that copy is a deep copy
+  // check that copy is a deep copy. modifying either queue should not affect the other
   if(testValuesNEQ(intQueue, copiedQueue)){
-    cout << "Copied queue is a deep copy, each node has a unique address" << endl;
+    cout << "Copied queue is a deep copy, each node has a unique address " << 
+    "when compared with it's respective counterpart" << endl;
   } else {
     cout << "Copied queue is a shallow copy, at least one node shares " <<
-    "an address with another" << endl;
+    "an address with it's respective counterpart" << endl;
   }
 
 
@@ -120,9 +121,44 @@ int main() {
   initializeQueue(intQueue);
   initializeQueue(assignQueue);
 
+  // want to copy intQueue into assignQueue
+  // must erase contents of assignQueue first
   assignQueue = intQueue;
 
+  // check that copy is a deep copy. modifying either queue should not affect the other
+  if(testValuesNEQ(intQueue, assignQueue)){
+    cout << "Assign queue is a deep copy, each node has a unique " <<
+    "address when compared with it's respective counterpart" << endl;
+  } else {
+    cout << "Assign queue is a shallow copy, at least one node shares " <<
+    "an address with it's respective counterpart" << endl;
+  }
 
+  // check edge cases. (use exception handling to prevent prog from crashing)
+  // make sure copy and assign can handle list with one entry
+  // make sure queues aren't empty before being copied
+  // make sure queues aren't self assigned
+  // 
+
+  // test to see if copy constructor can handle a queue
+  // w/ one entry. spoiler: mine can't. fails once it gets
+  // in enqueue. not sure how to solve that.
+  clearQueue(intQueue);
+  intQueue.enqueue(1);
+
+  // call copy constructor
+  // create a new obj from a pre-existing object
+  // Queue<int> newCopyQueue = intQueue;
+
+  // call assign oper
+  // copy a pre-existing obj to another pre-existing obj
+  Queue<int> newAssignQueue;
+
+  initializeQueue(newAssignQueue);
+
+  // want to copy intQueue into assignQueue
+  // must erase contents of assignQueue first
+  newAssignQueue = intQueue;
 
   return 0;
 }
