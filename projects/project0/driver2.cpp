@@ -75,6 +75,7 @@ int main() {
   // erase contents of queue
   clearQueue(intQueue);
 
+  // make sure queues aren't empty before being copied
   cout << "\nAttempt dequeue() of empty queue:\n";
   try {
 
@@ -136,9 +137,6 @@ int main() {
 
   // check edge cases. (use exception handling to prevent prog from crashing)
   // make sure copy and assign can handle list with one entry
-  // make sure queues aren't empty before being copied
-  // make sure queues aren't self assigned
-  // 
 
   // test to see if copy constructor can handle a queue
   // w/ one entry. spoiler: mine can't. fails once it gets
@@ -159,6 +157,9 @@ int main() {
   // want to copy intQueue into assignQueue
   // must erase contents of assignQueue first
   newAssignQueue = intQueue;
+
+  // make sure queues aren't self assigned
+  newAssignQueue = newAssignQueue;
 
   return 0;
 }
