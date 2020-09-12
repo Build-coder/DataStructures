@@ -58,6 +58,7 @@ using namespace std;
         
         for(int i = 0; i < m; i++){
             matrix[i] = new int[n];
+            *matrix[i] = init;
             cout << *matrix[i] << endl;
         }
             
@@ -121,18 +122,46 @@ class LinkedList { // a linked list
         void append(const string& toInsert){
 
             // implement here
+            Node* newPtr = new Node();
+            Node* tempPtr;
 
-
-
-        };
+            if (m_head == nullptr){
+                m_head = newPtr;
+            }
+            else{
+                tempPtr = m_head;
+                while ( tempPtr-> m_next != nullptr ) {
+                    tempPtr = tempPtr->m_next;
+                }
+                tempPtr->m_next = newPtr;
+            }
+        }
 
         //remove the last member of the list
         void removeTail(){
             
             // implement here
+            if ( empty() ) {
+                throw range_error("Queue<T>::dequeue(): attempt to dequeue an empty Queue.");
+            }
 
+            Node* newPtr = new Node();
+            Node* tempPtr;
 
-        };
+            if (m_head == nullptr){
+                m_head = m_head;
+            }
+            else{
+                tempPtr = m_head;
+                while ( tempPtr-> m_next != nullptr ) {
+                    tempPtr = tempPtr->m_next;
+                }
+
+                Node* tmpPtr = m_head->m_next;
+                delete m_head;
+                m_head = tmpPtr;            
+            }
+        }
 
         //prints all members in order from head to tail
         void printList();
@@ -181,11 +210,31 @@ int main(){
 
     // Question 4
     int **array;
-    buildMatrix(array, 2, 2);
-    deleteMatrix(array, 2);
+    buildMatrix(array, 4, 2);
+    // deleteMatrix(array, 2);
 
     // Question 5
 
+    LinkedList *LL1 = new LinkedList();
+
+    LL1->append("Billy");
+
+    // make sure queues aren't empty before being copied
+    cout << "\nAttempt dequeue() of empty queue:\n";
+    try {
+
+        // try to remove the head of the queue
+        LL1->removeTail();
+
+        // queue is empty so dequeue will throw an exception
+        // and exit
+
+        // pass in exception message  
+    } catch (exception &e) {
+
+        // print exception message 
+        cout << "Caught exception:\n" << e.what() << endl;
+    }
     
     return 0;
 
