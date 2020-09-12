@@ -37,34 +37,38 @@ using namespace std;
 
 // 3.) What is diff about the behavior of the following funcs?
 
-    // prints the value stored in 'x'
+    // argument is the value stored in 'x'
     void f(int x){
-        std::cout << ++x;
+        cout << ++x << endl;
     }
     
-    // prints the memory address of 'x'
+    // argument is the memory address of 'x'
     void g(int &x){
-        std::cout << ++x;
+        cout << ++x << endl;
     }
 
 // 4.) Explain questions 4a and 4b in two-three sentences.
 //     DO NOT MODIFY THE DATA STRUCTURE. 
 //     The variable matrix represents a 2D array of ints
 
+
     void buildMatrix(int **matrix, int m, int n){
         int init = 10;
         matrix = new int*[m];
         
-        for(int i = 0; i < m; i++)
+        for(int i = 0; i < m; i++){
             matrix[i] = new int[n];
+            cout << *matrix[i] << endl;
+        }
+            
     }
 
     void deleteMatrix(int **matrix, int m){
     
         for (int i=0;i<m;i++){
             delete [] matrix[i];
-            delete [] matrix;
         }  
+        delete [] matrix;
     }
 
 //  4a.) Why does the following code have memory leaks?
