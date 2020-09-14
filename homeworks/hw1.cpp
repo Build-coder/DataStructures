@@ -17,7 +17,7 @@ using namespace std;
         }
     }
 
-// 2.) Fix the following functions so they run
+// 2.) Fix the following function so it runs
 
     void myTest(int** dataStructure[][10]) {
         
@@ -60,8 +60,7 @@ using namespace std;
             matrix[i] = new int[n];
             *matrix[i] = init;
             cout << *matrix[i] << endl;
-        }
-            
+        }  
     }
 
     void deleteMatrix(int **matrix, int m){
@@ -74,15 +73,15 @@ using namespace std;
 
 //  4a.) Why does the following code have memory leaks?
 
-
-
-
-
+// line 69: delete[] matrix[i] causes a seg fault b/c matrix[i] 
+// cannot be reached. this is because it was not properly 
+// created and initialized in the buildMatrix function
 
 
 // 4b.) How can we fix the problem? Find bug causing problem.
 
-
+// we can properly create and initialize matrix[i] in the
+// buildMatrix function
 
 
 // 5.) The following code presents the interface of a linked
@@ -106,15 +105,55 @@ class Node { // a node in a linked list
         Node* m_next; // next item in the list
         // provide LinkedList access
         friend class LinkedList;
+
+        // friend ostream& operator<< (ostream &sout, const Node &x){
+        //     sout << x.m_elem << endl;
+        // };
+
 };
 
 class LinkedList { // a linked list
     public:
-        LinkedList(); // empty list constructor
-        ~LinkedList(); // destructor
-        bool empty() const; // is list empty?
+        LinkedList(){
+            m_head = nullptr;
+        }; // empty list constructor
+
+        ~LinkedList(){
+              
+            Node* curr = m_head;
+
+            while(m_head != nullptr){
+                // move tracker to next node
+                m_head = m_head->m_next;
+                // delete prev node
+                delete curr;
+                // set curr to nullptr
+                curr = nullptr;
+                // set curr to mm_head node
+                curr = m_head;
+            }
+            
+            m_head = nullptr;
+        }; // destructor
+
+        bool empty() const{
+            return m_head == nullptr;
+        }; // is list empty?
+
         // get the front (head) member
         const string& front() const;
+
+        // get head
+        Node* getHead() const{
+            return m_head;
+        }
+
+        Node* getNext() const{
+            Node* nodePtr;
+
+            return nodePtr->m_next;
+        }
+
         // get the last member
         const string& tail() const;
 
@@ -127,6 +166,7 @@ class LinkedList { // a linked list
 
             if (m_head == nullptr){
                 m_head = newPtr;
+                newPtr->m_elem = toInsert;
             }
             else{
                 tempPtr = m_head;
@@ -134,6 +174,7 @@ class LinkedList { // a linked list
                     tempPtr = tempPtr->m_next;
                 }
                 tempPtr->m_next = newPtr;
+                newPtr->m_elem = toInsert;
             }
         }
 
@@ -145,26 +186,46 @@ class LinkedList { // a linked list
                 throw range_error("Queue<T>::dequeue(): attempt to dequeue an empty Queue.");
             }
 
-            Node* newPtr = new Node();
-            Node* tempPtr;
+            Node* curr;
+            Node* prev;
 
             if (m_head == nullptr){
                 m_head = m_head;
             }
             else{
-                tempPtr = m_head;
-                while ( tempPtr-> m_next != nullptr ) {
-                    tempPtr = tempPtr->m_next;
+                curr = m_head;
+
+                while ( curr-> m_next != nullptr ) {
+                    prev = curr;
+                    curr = curr->m_next;
                 }
 
-                Node* tmpPtr = m_head->m_next;
-                delete m_head;
-                m_head = tmpPtr;            
+                prev->m_next = nullptr;
+                delete curr; 
+                curr = nullptr;         
             }
         }
 
         //prints all members in order from head to tail
-        void printList();
+        void printList(){
+            Node* nodePtr = m_head;
+
+            while ( nodePtr != nullptr) {
+                cout << nodePtr->m_elem << endl;
+                nodePtr = nodePtr->m_next;
+            }
+        };
+
+        bool testLastValue(){
+
+            Node* curr = m_head;
+
+            while (curr != nullptr){
+                curr = curr->m_next;
+            }
+
+            return curr->m_next == nullptr;
+        }
 
     private:
         Node* m_head; // pointer to the head of list
@@ -173,8 +234,14 @@ class LinkedList { // a linked list
 
 //  6.) List the test cases required to test the append(..) function
 
+//      - bool test to make sure there are no duplicate values
+//      - bool test to make sure there are no duplicate addresses
+
 
 // 7.)  List the test cases required to test the removeTail() function
+
+//      - bool test to make sure tail's next is nullptr
+//      - bool test to make sure one element is deleted everytime func is called
 
 
 // 8.) Implement a testing function for the function removeTail()
@@ -189,6 +256,8 @@ class LinkedList { // a linked list
 //     You can use the funcs provided by the class interface
 //     If required, you can catch exceptions thrown in your
 //     implementation of the func removeTail()
+
+
 
 int main(){
 
@@ -211,20 +280,47 @@ int main(){
     // Question 4
     int **array;
     buildMatrix(array, 4, 2);
-    // deleteMatrix(array, 2);
+    deleteMatrix(array, 2);
+    cout << endl;
 
     // Question 5
 
-    LinkedList *LL1 = new LinkedList();
+    LinkedList LL1;
 
-    LL1->append("Billy");
+    for (int i = 1; i <= 5; i++) {
+
+        switch (i) {
+        case 1:
+            LL1.append("Syd");
+            break;
+        case 2:
+            LL1.append("Nala");
+            break;
+        case 3:
+            LL1.append("Simba");
+            break;
+        case 4:
+            LL1.append("Scar");
+            break;
+        case 5:
+            LL1.append("Mufasa");
+            break;
+                        
+        default:
+            break;
+        }
+    }
+
+    LL1.printList();
+
+    cout << endl;
 
     // make sure queues aren't empty before being copied
     cout << "\nAttempt dequeue() of empty queue:\n";
     try {
 
         // try to remove the head of the queue
-        LL1->removeTail();
+        LL1.removeTail();
 
         // queue is empty so dequeue will throw an exception
         // and exit
@@ -235,13 +331,17 @@ int main(){
         // print exception message 
         cout << "Caught exception:\n" << e.what() << endl;
     }
+
+    LL1.printList();
+
+    cout << endl;
+
+    LL1.removeTail();
+
+    LL1.printList();
+
+    cout << endl;
     
     return 0;
 
 }
-
-
-
-
-
-
