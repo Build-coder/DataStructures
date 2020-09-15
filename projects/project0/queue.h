@@ -98,18 +98,22 @@ Queue<T>::Queue(const Queue<T>& rhs) {
   // ********************************
   // Implement the copy constructor
   // ********************************
-  
 
   Node<T>* curr = rhs._head;
 
-  while(curr != nullptr) {
+  if (curr == nullptr){
 
-    enqueue(curr->_data);
+    _head = nullptr;
 
-    curr = curr->_next;
+  } else {
 
+    while(curr != nullptr) {
+
+      enqueue(curr->_data);
+
+      curr = curr->_next;
+    }
   }
-
 }
 
 template <class T>
