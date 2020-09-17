@@ -1,156 +1,242 @@
 // CMSC 341 - Fall 2020 - Project 0
-
-// mytest.cpp: a unit test to test copy and assignment functions in queue.h.
-
-// #include <exception>
-// using std::range_error;
+// Name     - Phil Wood
+// driver.cpp: a sample driver for the Queue class.
+// This is a test program
 
 #include <iostream>
 #include "queue.h"
 
 using namespace std;
 
-    void TestCopyAssignmentAndDestruct(){
+// constants
+int NUM_OF_NODE_PTRS = 5; // feel free to change value
 
-        // create queue by calling constructor
-        Queue<string> firstQueue; 
+// function declarations;
+void initializeQueue(Queue<int>& sourceQueue);
+void clearQueue(Queue<int>& sourceQueue);
+void shallowCopy();
+bool testValuesEQ(Queue<int>& queue1, Queue<int>& queue2);
+bool testAdressesNEQ(Queue<int>& queue1, Queue<int>& queue2);
+bool testEmptyQueues(Queue<int>& queue1, Queue<int>& queue2);
 
-        // create second queue by calling constructor
-        Queue<string> secondQueue;  
+
+/*****************************************/
+/************UTILITY FUNCS****************/
+/*****************************************/
+
+// initialize values in queue
+void initializeQueue(Queue<int>& sourceQueue){
+  // cout << "\nPush integers on queue and dump contents:\n";
+  for (int i = 1; i <= NUM_OF_NODE_PTRS; i++) {
+    sourceQueue.enqueue(i);
+  }
+}
+
+// erase values in queue
+void clearQueue(Queue<int>& sourceQueue){
+  // if queue is not empty
+  while ( not sourceQueue.empty() ) {
+
+    // remove the head of node
+    sourceQueue.dequeue();
+  }
+}
+
+/*****************************************/
+/************BOOL UNIT TESTS**************/
+/*****************************************/
+
+// test to make sure queues are copies of one another
+bool testValuesEQ(Queue<int>& queue1, Queue<int>& queue2){
+
+  for (int i = 0; i < NUM_OF_NODE_PTRS; i++){
+
+    if (queue1.head() == queue2.head()){
+      
+      queue1.dequeue();
+      queue2.dequeue();
+
+    } else {
         
-        // initialize both queues with data
-        for (int i = 1; i <= 5; i++) {
+      return false;
+      
+    }
+  } 
 
-            switch (i) {
-            case 1:
-                firstQueue.enqueue("Syd");
-                secondQueue.enqueue("Ariel");
-                break;
-            case 2:
-                firstQueue.enqueue("Nala");
-                secondQueue.enqueue("Sebastian");
-                break;
-            case 3:
-                firstQueue.enqueue("Simba");
-                secondQueue.enqueue("Scuttle");
-                break;
-            case 4:
-                firstQueue.enqueue("Scar");
-                secondQueue.enqueue("Flounder");
-                break;
-            case 5:
-                firstQueue.enqueue("Mufasa");
-                secondQueue.enqueue("King Triton");
-                break;
-                            
-            default:
-                break;
-            }
-        }
+  return true;
+}
 
-        // print contents of both queues
-        cout << "Contents of first queue: " << endl;
-        firstQueue.dump();
-        cout << endl;
+// test to make sure copy is deep
+bool testAdressesNEQ(Queue<int>& queue1, Queue<int>& queue2){
 
-        cout << "Contents of second queue: " << endl;
-        secondQueue.dump();
-        cout << endl;
+  for (int i = 0; i < NUM_OF_NODE_PTRS; i++){
 
+    if (&queue1.head() != &queue2.head()){
+      
+      queue1.dequeue();
+      queue2.dequeue();
 
-        // check that a copy is made. new queue should contain same data as source
-
-        // call copy constructor
-        Queue<string> copiedQueue = firstQueue;
-
-        cout << "Contents of original queue: " << endl;
-        firstQueue.dump();
-        cout << endl;
-
-        cout << "Contents of copied queue: " << endl;
-        copiedQueue.dump();
-        cout << endl;
-
-        // // call assignment oper
-        Queue<string> assignQueue;
-
-        for (int i = 1; i <= 5; i++) {
-            assignQueue.enqueue(to_string(i));
-        }
-
-        assignQueue = secondQueue;
-
-        // cout << "Contents of original queue: " << endl;
-        // secondQueue.dump();
-        // cout << endl;
-
-        // cout << "Contents of assigned queue: " << endl;
-        // assignQueue->dump();
-        // cout << endl;
-
-
-        // // check copy is deep. modifying either queue should
-        // // not change the other
-
-        // for (int i = 1; i <= 5; i++) {
-        //     copiedQueue.enqueue("Harry Potter");
-        //     assignQueue->enqueue("Bugs Bunny");
-        // }
-
-        // cout << "Contents of copied queue after change" << endl;
-        // copiedQueue.dump();
-        // cout << endl;
-
-        // cout << "Contents of original queue" << endl;
-        // firstQueue.dump();
-        // cout << endl;
-
-        // cout << "Contents of assignment oper queue after change" << endl;
-        // assignQueue->dump();
-        // cout << endl;
-
-        // cout << "Contents of original queue" << endl;
-        // secondQueue.dump();
-        // cout << endl;
-
-        // // check edge cases. do they work correctly if the source queue is empty?
-
-        // Queue<string> thirdQueue;
-
-        // cout << "Contents of empty queue: " << endl;
-        // thirdQueue.dump();
-        // cout << endl;
-
-        // // call copy constructor
-        // Queue<string>* copiedEmptyQueue = new Queue<string>(thirdQueue);
-
-        // cout << "Contents of copied empty queue: " << endl;
-        // copiedEmptyQueue->dump();
-        // cout << endl;
-
-
-        // // for the assignment operator, check that you have guarded against 
-        // // self-assignment
-
-        // delete assignQueue;
-        // delete copiedEmptyQueue;
-
-        cout << "------------------------------" << endl << endl;
+    } else {
         
+      return false;
+      
+    }
+  } 
+
+  return true;
+}
+
+// test that source and copied list are empty
+bool testEmptyCopied(Queue<int>& queue1, Queue<int>& queue2){
+
+  return queue1.empty() && queue2.empty();
+}
+
+
+int main() {
+
+  
+  /**********************************************************/
+  /***********TEST EXCEPTION HANDLING OF EMPTY QUEUE*********/
+  /**********************************************************/
+  cout << "\n/**************************************************/\n" <<
+  "/*****TEST EXCEPTION HANDLING OF EMPTY QUEUE*******/\n" <<
+  "/**************************************************/\n\n";
+
+  // create queue object
+  Queue<int> sourceQueue;
+
+  // initialize values in queue
+  initializeQueue(sourceQueue);
+
+  // erase contents of queue
+  clearQueue(sourceQueue);  
+
+  // make sure queues aren't empty before being copied
+  cout << "\nAttempt dequeue() of empty queue:\n";
+  try {
+
+    // try to remove the head of the queue
+    sourceQueue.dequeue();
+
+    // queue is empty so dequeue will throw an exception
+    // and exit
+
+    // pass in exception message 
+  } catch (exception &e) {
+
+    // print exception message 
+    cout << "Caught exception:\n" << e.what() << endl;
+  }
+
+  ///////////////////////////////////////////////////////
+
+
+
+
+
+  /**************************************************/
+  /************TESTING COPY CONSTRUCTOR**************/
+  /**************************************************/
+
+  cout << "\n/**************************************************/\n" <<
+  "/************TESTING COPY CONSTRUCTOR**************/\n" <<
+  "/**************************************************/\n\n";
+
+  initializeQueue(sourceQueue);
+
+  // call copy constructor
+  Queue<int> copiedQueue = sourceQueue;
+
+   // check that copy is made
+  if(testValuesEQ(sourceQueue, copiedQueue)){
+    cout << "Each value of the source queue matches copied queue. " <<
+    "\nTherefore, they are copies of one another.\n\n";
+  } else {
+    cout << "One or more values don't match. \nTherefore, they aren't copies\n\n";
+  }
+  
+  // have to recreate the copy cause testValuesEQ cleared the queues
+  initializeQueue(sourceQueue);
+  Queue<int> copiedQueue2 = sourceQueue;
+
+  // check that copy is a deep copy. modifying either queue should not affect the other
+  if(testAdressesNEQ(sourceQueue, copiedQueue2)){
+    cout << "Each node has a unique address when compared to it's respective counterpart." << 
+    " \nTherefore copied queue is a deep copy.\n\n";
+  } else {
+    cout << "At least one node shares an address with it's respective counterpart." <<
+    " \nTherefore, copied queue is a shallow copy\n\n";
+  }
+
+
+  // EDGE CASES:
+  
+  // test that empty queue doesn't break copy construct
+  Queue<int> copiedQueue3 = sourceQueue;  
+
+  // check that source and copied queue are empty
+  if(testEmptyCopied(sourceQueue, copiedQueue3)){
+    cout << "Copied successfully! Source and copied queue are empty\n";
+  } else {
+    cout << "Copy failed! One of the queues isn't a match of the other\n";
+  }
+
+
+  /**************************************************/
+  /*********TESTING OVERLOAD ASSIGN OPER*************/
+  /**************************************************/
+
+    cout << "\n/**************************************************/\n" <<
+  "/************TESTING OVERLOAD ASSIGN OPER**********/\n" <<
+  "/**************************************************/\n\n";
+
+  Queue<int> assignQueue;
+  Queue<int> assignQueue2;
+  Queue<int> assignQueue3;
+
+  initializeQueue(sourceQueue);
+  initializeQueue(assignQueue);
+  initializeQueue(assignQueue2);
+  initializeQueue(assignQueue3);
+
+
+  // call overload assign oper
+  assignQueue = sourceQueue;
+
+  // check that copy is made
+  if(testValuesEQ(sourceQueue, assignQueue)){
+    cout << "Each value of the source queue matches copied queue. " <<
+    "\nTherefore, they are copies of one another.\n\n";
+  } else {
+    cout << "One or more values don't match. Therefore, they aren't copies.\n\n";
+  }
+
+  initializeQueue(sourceQueue);
+
+  // have to recreate the copy cause testValuesEQ cleared the queue
+  assignQueue2 = sourceQueue;
+
+  // check that copy is a deep copy. modifying either queue should not affect the other
+  if(testAdressesNEQ(sourceQueue, assignQueue2)){
+    cout << "Each node has a unique address when compared to it's respective counterpart." << 
+    " \nTherefore copied queue is a deep copy.\n\n";
+  } else {
+    cout << "At least one node shares an address with it's respective counterpart." <<
+    " \nTherefore, copied queue is a shallow copy\n\n";
+  }
+
+  // EDGE CASES:
+  
+  // test that empty queue doesn't break copy construct
+  assignQueue3 = sourceQueue;
+
+  // check that source and copied queue are empty
+  if(testEmptyCopied(sourceQueue, assignQueue3)){
+    cout << "Copied successfully! Source and copied queue are empty\n\n";
+    } else {
+      cout << "Copy failed! One of the queues isn't a match of the other\n\n";
     }
 
-    int main() {
-
-        cout << "*****************************************************************" << endl;
-        cout << " SSSS  U   U  BBBB   N    N   AAA   U   U  TTTTT  II  CCCC   AAA " << endl;
-        cout << " S     U   U  B   B  NN   N  A   A  U   U    T    II  C     A   A" << endl;
-        cout << " S     U   U  B   B  N N  N  A   A  U   U    T    II  C     A   A" << endl;
-        cout << " SSSS  U   U  BBBB   N  N N  AAAAA  U   U    T    II  C     AAAAA" << endl;
-        cout << "    S  U   U  B   B  N  N N  A   A  U   U    T    II  C     A   A" << endl;
-        cout << "    S  U   U  B   B  N   NN  A   A  U   U    T    II  C     A   A" << endl;
-        cout << " SSSS  UUUUU  BBBB   N    N  A   A  UUUUU    T    II  CCCC  A   A" << endl;
-        cout << "*****************************************************************" << endl;
-
-        TestCopyAssignmentAndDestruct();
-
-    }
+  return 0;
+}
