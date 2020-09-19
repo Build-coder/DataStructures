@@ -5,6 +5,14 @@ CSR::CSR(){
     /***********************************
      *      To be implemented
      * ********************************/
+
+    // int* m_values = nullptr;//array to store non-zero values
+    // int* m_col_index = nullptr;//array to store column indices
+    // int* m_row_index = nullptr;//array to store row indices 
+    // int m_nonzeros = 0;//number of non-zero values
+    // int m_m = 0;//number of rows
+    // int m_n = 0;//number of columns
+    // CSR* m_next = nullptr;//pointer to the next CSR object in linked list
 }
 
 CSR::~CSR(){
@@ -17,6 +25,7 @@ CSR::CSR(const CSR & rhs){
     /***********************************
      *      To be implemented
      * ********************************/
+
 }
 
 void CSR::dump(){
@@ -57,6 +66,11 @@ void CSR::compress(int m, int n, int array[], int arraySize){
     /***********************************
      *      To be implemented
      * ********************************/
+
+    for (int i = 0; i < m; i++){
+        cout << array[i] << endl;
+    }
+    
 }
 
 int CSR::getAt(int row, int  col) const{
@@ -78,6 +92,7 @@ bool CSR::operator==(const CSR & rhs) const{
      * your implementaion should return
      * a correct value.
      * ********************************/
+
     return true;
 }
 

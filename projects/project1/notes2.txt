@@ -1,0 +1,67 @@
+object - node- csr 
+
+read matrix like a book: left to right, top to bottom
+
+always initialize pointers to nullptr
+
+memory allocation occurs in compress()
+
+compress: protect against self assignment
+          initiliaze all values to 0
+          initialize all pointers to nullptr
+          deallocate all memeory 
+          reallocate
+
+sparsity ratio: number of zereos divided by total number of elements 
+                return ratio as a percentage, not as a decimal
+
+overload assign oper: consists of destructor and copy constructor
+
+Chris:
+    - We are populating m_values in compress()
+    - Must use delete[] var_name, not delete var_name, to deallocate memeory
+
+Nathan:
+    - you have a list of matrices 
+    - each node contains 3 arrays
+
+Random(Daniel):
+    - compress is simpler than I thought. You aren't actually making a matrix.
+      Instead, you are pulling out values, indices, and sums into the three arrays
+
+
+
+
+Random/TA:
+    - compress needs to loop through the matrix
+      whenever you find a non-zero 
+      that number is pushed onto Z 
+      the column index (j) is pushed onto your column vector
+      add 1 to the rowIndex at i+1
+
+      Z = the non-zero value array
+
+datp:
+    - putting it back together w/ getAt() is a lil weird
+    - the arrays need to be dynamically allocated
+
+
+
+Atlas:
+    - arrays in csr are pointers
+
+
+<If_stmt> ::= if <namedexpr_test> : <suite>
+| if <namedexpr_test> : <suite> else : <suite>
+| if <namedexpr_test> : <suite> <else_if_stmt>
+| if <namedexpr_test> : <suite> <else_if_stmt> else : <suite>
+<else_if_stmt> ::= elif <namedexpr_test> : <suite>
+| elif <namedexpr_test> : <suite> <else_if_stmt>
+
+if_stmt = 'if' namedexpr_test ':' suite {'elif' namedexpr_test ':' suite} ['else' ':' suite]
+
+Notes about EBNF:
+• Square brackets are used to present the optional items, i.e. zero or one of an item.
+• Curly braces are used to present zero or more repetition of an item.
+• Terminals are surrounded by quotation marks.
+• Parentheses are used to group items and vertical bar is used to show possible alternatives
