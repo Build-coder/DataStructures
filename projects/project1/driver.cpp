@@ -1,6 +1,7 @@
 // CMSC 341 - Fall 2020 - Project 1
 // #include "csrlist.h"
 #include "csr.h"
+using namespace std;
 
 bool testEquality(CSR& a, CSR& b);
 // bool testEquality(CSRList& a, CSRList& b);
@@ -17,18 +18,23 @@ int main()
 
         // init aCSR
         aCSR.compress(4,6,array1,24);
+        
 
-    //     // make a copy of aCSR called bCSR
-    //     CSR bCSR(aCSR);
+        aCSR.dump();
 
-    //     // create a new CSR node
-    //     CSR cCSR;
+        // make a copy of aCSR called bCSR
+        CSR bCSR(aCSR);
 
-    //     // create a new array and init
-    //     int array2[] = {0,0,0,0,100,200,0,0,300};
+        // create a new CSR node
+        CSR cCSR;
 
-    //     // init cCSR
-    //     cCSR.compress(3,3,array2,9);
+        // create a new array and init
+        int array2[] = {0,0,0,0,100,200,0,0,300};
+
+        // init cCSR
+        cCSR.compress(3,3,array2,9);
+
+        cCSR.dump();
 
     //     // make a copy of cCSR called dCSR
     //     CSR dCSR(cCSR);

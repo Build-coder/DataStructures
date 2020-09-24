@@ -1,18 +1,21 @@
 // CMSC 341 - Fall 2020 - Project 1
 #include "csr.h"
+using namespace std;
 
 CSR::CSR(){
     /***********************************
      *      To be implemented
      * ********************************/
 
-    // int* m_values = nullptr;//array to store non-zero values
-    // int* m_col_index = nullptr;//array to store column indices
-    // int* m_row_index = nullptr;//array to store row indices 
-    // int m_nonzeros = 0;//number of non-zero values
-    // int m_m = 0;//number of rows
-    // int m_n = 0;//number of columns
-    // CSR* m_next = nullptr;//pointer to the next CSR object in linked list
+    int* m_values = nullptr;//array to store non-zero values
+    int* m_col_index = nullptr;//array to store column indices
+    int* m_row_index = nullptr;//array to store row indices 
+    int m_nonzeros = 0;//number of non-zero values
+    int m_m = 0;//number of rows
+    int m_n = 0;//number of columns
+    CSR* m_next = nullptr;//pointer to the next CSR object in linked list
+
+    cout << "CSR constructor called" << endl;
 }
 
 CSR::~CSR(){
@@ -21,10 +24,23 @@ CSR::~CSR(){
      * ********************************/
 }
 
-CSR::CSR(const CSR & rhs){
+// copy constructor
+CSR::CSR(const CSR & src){
     /***********************************
      *      To be implemented
      * ********************************/
+
+    // create a new CSR node
+    // copy all the values in each member variable
+    // of the rhs node to the new CSR node
+
+    CSR newNode;
+
+    newNode.m_nonzeros = src.m_nonzeros;
+    newNode.m_col_index = src.m_col_index;
+    
+    
+    
 
 }
 
@@ -59,7 +75,7 @@ bool CSR::empty() const{
      * your implementaion should return
      * a correct value.
      * ********************************/
-    return true;
+    return false;
 }
 
 void CSR::compress(int m, int n, int array[], int arraySize){
@@ -67,10 +83,56 @@ void CSR::compress(int m, int n, int array[], int arraySize){
      *      To be implemented
      * ********************************/
 
-    for (int i = 0; i < m; i++){
-        cout << array[i] << endl;
+    m_m = m;
+
+    // init m_nonzeros (size of new arrays)
+    for (int i = 0; i < arraySize; i++){
+
+        if (array[i] != 0){
+            m_nonzeros++;
+        }
     }
     
+    // create new arrays to store values
+    // save new arrays memory addresses 
+    // in member variables (int pointers)
+    m_values = new int[m_nonzeros];
+    m_col_index = new int[m_nonzeros];
+    m_row_index = new int[m_nonzeros];
+
+    // store values at 0 index
+    int var = 0;
+    int row = 0;
+
+    // init m_values, m_col_index, and m_row_index
+    for (int i = 0; i < arraySize; i++){
+
+        if (array[i] != 0){
+
+            // save nonzero values to m_values array
+            m_values[var] = array[i];
+
+            // save col indices to m_col_index array
+            m_col_index[var] = i % n;
+            
+            // increment var to access next open index
+            var++;       
+        }
+
+        // if next row of matrix or last row
+        if (i % n == 0 || i+1 == arraySize){
+
+            // if first row, set to 0
+            if (i == 0) {
+                m_row_index[0] = 0;
+
+            // otherwise, set to # of values found
+            } else {
+                row++;
+                m_row_index[row] = var;
+            }
+        }
+    }   
 }
 
 int CSR::getAt(int row, int  col) const{
