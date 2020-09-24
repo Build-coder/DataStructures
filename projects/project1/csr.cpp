@@ -36,10 +36,20 @@ CSR::CSR(const CSR & src){
 
     CSR newNode;
 
+    // init all non-pointers
     newNode.m_nonzeros = src.m_nonzeros;
-    newNode.m_col_index = src.m_col_index;
+    newNode.m_m = src.m_m;
+    newNode.m_n = src.m_n;
     
-    
+    // init pointers
+    newNode.m_values = new int[newNode.m_nonzeros];
+    newNode.m_col_index = new int[newNode.m_nonzeros];
+    newNode.m_row_index = new int[newNode.m_nonzeros];
+
+    for (int i = 0; i < m_nonzeros; i++)
+    {
+        /* code */
+    }
     
 
 }
