@@ -22,6 +22,18 @@ CSR::~CSR(){
     /***********************************
      *      To be implemented
      * ********************************/
+    delete [] m_values;
+    m_values = nullptr;
+
+    delete [] m_col_index;
+    m_col_index = nullptr;
+
+    delete [] m_row_index;
+    m_row_index = nullptr;
+
+    m_nonzeros = 0;
+    m_m = 0;
+    m_n = 0;
 }
 
 // copy constructor
@@ -32,7 +44,7 @@ CSR::CSR(const CSR & src){
 
     // create a new CSR node
     // copy all the values in each member variable
-    // of the rhs node to the new CSR node
+    // of the src node to the new CSR node
 
     CSR newNode;
 
@@ -46,12 +58,11 @@ CSR::CSR(const CSR & src){
     newNode.m_col_index = new int[newNode.m_nonzeros];
     newNode.m_row_index = new int[newNode.m_nonzeros];
 
-    for (int i = 0; i < m_nonzeros; i++)
-    {
-        /* code */
+    for (int i = 0; i < newNode.m_nonzeros; i++){
+        newNode.m_values[i] = src.m_values[i];
+        newNode.m_col_index[i] = src.m_col_index[i];
+        newNode.m_row_index[i] = src.m_row_index[i];
     }
-    
-
 }
 
 void CSR::dump(){

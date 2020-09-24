@@ -20,7 +20,8 @@ run:
 		./proj1
 
 val:
-		valgrind --track-origins=yes --leak-check=full -s ./proj1
+		# valgrind --track-origins=yes --leak-check=full -s ./proj1
+		valgrind ./proj1
 
 gdb:
 		gdb --quiet -tui --args ./proj1

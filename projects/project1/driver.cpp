@@ -36,11 +36,11 @@ int main()
 
         cCSR.dump();
 
-    //     // make a copy of cCSR called dCSR
-    //     CSR dCSR(cCSR);
+        // make a copy of cCSR called dCSR
+        CSR dCSR(cCSR);
 
-    //     // create a CSR list
-    //     CSRList aCSRList;
+        // // create a CSR list
+        // CSRList aCSRList;
 
     //     aCSRList.insertAtHead(aCSR);
     //     aCSRList.insertAtHead(cCSR);
