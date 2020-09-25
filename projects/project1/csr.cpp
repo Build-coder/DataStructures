@@ -131,9 +131,8 @@ bool CSR::empty() const{
      * Returns true if the object is empty,
      * otherwise returns false
      * 
-     * If the dimensions are both 0, then
-     * it's a 0x0 matrix which is an empty
-     * matrix
+     * If either dimension is 0, then
+     * it's  an empty matrix
      * ********************************/
 
     return (m_m == 0 || m_n == 0);

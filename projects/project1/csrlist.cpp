@@ -10,6 +10,9 @@ CSRList::CSRList(){
      * Constructor, creates an empty
      * CSRList object
      * ********************************/
+
+    m_head = nullptr;
+    m_size = 0;
 }
 
 CSRList::~CSRList(){
@@ -20,6 +23,22 @@ CSRList::~CSRList(){
     /***********************************
      * Deconstructor
      * ********************************/
+
+    CSR* curr = m_head;
+
+    while(m_head != nullptr){
+        // move tracker to next node
+        m_head = m_head->m_next;
+        // delete prev node
+        delete curr;
+        // set curr to nullptr
+        curr = nullptr;
+        // set curr to m_head node
+        curr = m_head;
+    }
+  
+    m_head = nullptr;
+    m_size = 0;
 }
 
 bool CSRList::empty() const{
@@ -36,7 +55,7 @@ bool CSRList::empty() const{
      * Returns true if the object is
      * empty, otherwise returns false
      * ********************************/
-    return true;
+    return (m_head == nullptr) && (m_size == 0);
 }
 
 void CSRList::insertAtHead(const CSR & matrix){
@@ -48,6 +67,23 @@ void CSRList::insertAtHead(const CSR & matrix){
      * Inserts the CSR object at the head 
      * of the CSRList object
      * ********************************/
+    CSR* newPtr = new CSR(matrix);
+    CSR* tempPtr;
+
+    if (m_head == nullptr){
+        m_head = newPtr;
+        m_size++;
+    }
+    else{
+        tempPtr = m_head;
+
+        while ( tempPtr->m_next != nullptr ) {
+            tempPtr = tempPtr->m_next;
+            m_size++;
+        }
+        tempPtr->m_next = newPtr;
+    }
+
 }
 
 void CSRList::clear(){
@@ -59,6 +95,17 @@ void CSRList::clear(){
      * Resets the CSRList object to its
      * initial, empty state
      * ********************************/
+
+    CSR* nodePtr = m_head;
+
+    while ( nodePtr != nullptr ) {
+        nodePtr->clear();
+        nodePtr = nodePtr->m_next;
+    }
+
+    m_head = nullptr;
+    m_size = 0;
+
 }
 
 int CSRList::getAt(int CSRIndex, int row, int col) const{
@@ -80,8 +127,22 @@ int CSRList::getAt(int CSRIndex, int row, int col) const{
      * object, or the CSR object does 
      * not exist in the list
      * ********************************/
-    return 0;
+
+    CSR* curr = m_head;
+    int i = 0;
+
+    while (curr != nullptr){
+
+        if (CSRIndex == i){
+            return curr->getAt(row, col);
+        }
+
+        i++;  
+    }
+    
+    return NULL;
 }
+
 
 void CSRList::dump(){
     if (!empty()){
@@ -94,6 +155,7 @@ void CSRList::dump(){
     else
         throw runtime_error("Error: List is empty!");
 }
+
 
 bool CSRList::operator== (const CSRList & rhs) const{
     /***********************************
@@ -110,10 +172,25 @@ bool CSRList::operator== (const CSRList & rhs) const{
      * and in the same order, otherwise
      * returns false
      * ********************************/
-    return false;
+
+    CSR* source = rhs.m_head;
+    CSR* curr = m_head;
+
+    while (curr != nullptr){
+
+        for (int i = 0; i < curr->m_nonzeros; i++){
+            
+            if (curr->m_values[i] != source->m_values[i]){
+
+                return false;
+            } 
+        }
+    }
+    
+    return true;
 }
 
-const CSRList& CSRList::operator=(const CSRList & rhs){
+const CSRList& CSRList::operator=(const CSRList & src){
     /***********************************
      *      To be implemented
      * ********************************/
@@ -121,6 +198,52 @@ const CSRList& CSRList::operator=(const CSRList & rhs){
     /***********************************
      * Assignment Operator
      * ********************************/
+
+    if(this != &src) {
+
+        /**************
+         * Delete Data
+         * ***********/
+
+        CSR* curr = m_head;
+
+        while(m_head != nullptr){
+        // move tracker to next node
+        m_head = m_head->m_next;
+        // delete prev node
+        delete curr;
+        // set curr to nullptr
+        curr = nullptr;
+        // set curr to m_head node
+        curr = m_head;
+        }
+
+        m_head = nullptr;
+
+        /**************
+         * Copy Data
+         * ***********/
+
+        CSR* source = src.m_head;
+        int i = 0;
+
+        while(source != nullptr) {
+        
+            curr->m_values[i] = source->m_values[i];
+            curr->m_col_index[i] = source->m_col_index[i];
+            curr->m_row_index[i] = source->m_row_index[i];
+            curr->m_nonzeros = source->m_nonzeros;
+            curr->m_m = source->m_m;
+            curr->m_n = source->m_n;
+
+            m_size++;
+            i++;
+        }
+
+        //iterate to next node
+        source = source->m_next;
+    }
+    
     return *this;
 }
 
@@ -141,5 +264,15 @@ int CSRList::averageSparseRatio(){
      * the ratio is 0.656, the func 
      * returns 0.656 x 100 = 65 as int
      * ********************************/
-    return 0;
+
+    CSR* curr = m_head;
+    float total = 0.0;
+
+    while (curr != nullptr){
+
+        total = curr->sparseRatio() + total;
+    }
+    
+    // return average
+    return (total/float(m_size))*100;
 }
