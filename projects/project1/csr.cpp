@@ -136,7 +136,7 @@ bool CSR::empty() const{
      * matrix
      * ********************************/
 
-    return (m_m == 0);
+    return (m_m == 0 || m_n == 0);
 }
 
 void CSR::compress(int m, int n, int array[], int arraySize){
@@ -230,17 +230,19 @@ int CSR::getAt(int row, int  col) const{
      * namespace
      * ********************************/
 
-    for (int i = 0; i < m_nonzeros; i++){
+    int row_start = m_row_index[row];
+    int row_end = m_row_index[row+1];
 
-        if (m_row_index[i+1] % m_m == row &&
-        m_col_index[i] == col){
+    while (row_start != row_end){
 
-            return m_values[i];
+        if (m_col_index[row_start] == col){
+
+            return m_values[row_start];
         }
         
+        row_start++;
     }
     
-
     return 0;
 } 
 
@@ -285,5 +287,12 @@ int CSR::sparseRatio(){
      * number of members in a matrix
      * ********************************/
 
-    return (m_m * m_n) - m_nonzeros;
+    // total number of members
+    int total_mems = m_m * m_n;
+
+    // total number of zeros
+    int total_zeros = total_mems - m_nonzeros;
+
+    // return ratio as a percentage
+    return (total_zeros / total_mems) * 100;
 }

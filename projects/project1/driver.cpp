@@ -22,6 +22,9 @@ int main()
 
         aCSR.dump();
 
+        cout << "getAt() = " << aCSR.getAt(1, 1) << endl;
+
+
         // make a copy of aCSR called bCSR
         CSR bCSR(aCSR);
 
@@ -59,7 +62,9 @@ int main()
 
         fCSR.dump();
 
-        cout << "getAt() = " << fCSR.getAt(2, 0) << endl;
+        cout << "getAt() = " << fCSR.getAt(1, 2) << endl;
+
+
 
         // // create a CSR list
         // CSRList aCSRList;
