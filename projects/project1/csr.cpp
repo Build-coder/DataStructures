@@ -7,6 +7,12 @@ CSR::CSR(){
      *      To be implemented
      * ********************************/
 
+    /***********************************
+     * Default constructor, creates an empty
+     * object. An empty object does not have
+     * any memory allocated
+     * ********************************/
+
     int* m_values = nullptr;//array to store non-zero values
     int* m_col_index = nullptr;//array to store column indices
     int* m_row_index = nullptr;//array to store row indices 
@@ -22,6 +28,7 @@ CSR::~CSR(){
     /***********************************
      *      To be implemented
      * ********************************/
+
     delete [] m_values;
     m_values = nullptr;
 
@@ -36,15 +43,20 @@ CSR::~CSR(){
     m_n = 0;
 }
 
-// copy constructor
 CSR::CSR(const CSR & src){
     /***********************************
      *      To be implemented
      * ********************************/
 
-    // create a new CSR node
-    // copy all the values in each member variable
-    // of the src node to the new CSR node
+    /***********************************
+     * Copy constructor, creates a copy 
+     * of src.
+     * 
+     * Create a new CSR node
+     * Copy all the values in each member
+     * variable of the src node to the new 
+     * CSR node
+     * ********************************/
 
     CSR newNode;
 
@@ -86,6 +98,24 @@ void CSR::clear(){
     /***********************************
      *      To be implemented
      * ********************************/
+
+    /***********************************
+     * Deallocates all memory, and makes
+     * the object an empty CSR
+     * ********************************/
+
+    delete [] m_values;
+    m_values = nullptr;
+
+    delete [] m_col_index;
+    m_col_index = nullptr;
+
+    delete [] m_row_index;
+    m_row_index = nullptr;
+
+    m_nonzeros = 0;
+    m_m = 0;
+    m_n = 0;
 }
 
 bool CSR::empty() const{
@@ -96,7 +126,17 @@ bool CSR::empty() const{
      * your implementaion should return
      * a correct value.
      * ********************************/
-    return false;
+
+    /***********************************
+     * Returns true if the object is empty,
+     * otherwise returns false
+     * 
+     * If the dimensions are both 0, then
+     * it's a 0x0 matrix which is an empty
+     * matrix
+     * ********************************/
+
+    return (m_m == 0);
 }
 
 void CSR::compress(int m, int n, int array[], int arraySize){
@@ -105,6 +145,7 @@ void CSR::compress(int m, int n, int array[], int arraySize){
      * ********************************/
 
     m_m = m;
+    m_n = n;
 
     // init m_nonzeros (size of new arrays)
     for (int i = 0; i < arraySize; i++){
@@ -114,9 +155,13 @@ void CSR::compress(int m, int n, int array[], int arraySize){
         }
     }
     
-    // create new arrays to store values
-    // save new arrays memory addresses 
-    // in member variables (int pointers)
+
+    /***********************************
+     * Create new arrays to store values
+     * Save new arrays memory addresses
+     * in member vars (int pointers)
+     * ********************************/
+
     m_values = new int[m_nonzeros];
     m_col_index = new int[m_nonzeros];
     m_row_index = new int[m_nonzeros];
@@ -128,30 +173,38 @@ void CSR::compress(int m, int n, int array[], int arraySize){
     // init m_values, m_col_index, and m_row_index
     for (int i = 0; i < arraySize; i++){
 
+        // for each new row of matrix...
+        if (i % n == 0){
+
+            // if first row, set m_row to 0
+            if (i == 0) {
+                m_row_index[0] = 0;
+
+            // otherwise, set m_row to # of values found
+            } else {
+                row++;
+                m_row_index[row] = var;
+            }
+        }
+
+        // for each nonzero value...
         if (array[i] != 0){
 
-            // save nonzero values to m_values array
+            // save nonzero values to m_values 
             m_values[var] = array[i];
 
-            // save col indices to m_col_index array
+            // save col indices to m_col_index 
             m_col_index[var] = i % n;
             
             // increment var to access next open index
             var++;       
         }
 
-        // if next row of matrix or last row
-        if (i % n == 0 || i+1 == arraySize){
+        // if last row
+        if (i+1 == arraySize){
 
-            // if first row, set to 0
-            if (i == 0) {
-                m_row_index[0] = 0;
-
-            // otherwise, set to # of values found
-            } else {
-                row++;
-                m_row_index[row] = var;
-            }
+            row++;
+            m_row_index[row] = var;
         }
     }   
 }
@@ -164,10 +217,34 @@ int CSR::getAt(int row, int  col) const{
      * your implementaion should return
      * a correct value.
      * ********************************/
+
+    /***********************************
+     * Returns the value of the matrix 
+     * member at indices row and col.
+     * 
+     * Requires exception handling if an
+     * index does not exist. You can use
+     * runtime_error exception which is 
+     * defined in <stdexcept> library 
+     * and is available from std 
+     * namespace
+     * ********************************/
+
+    for (int i = 0; i < m_nonzeros; i++){
+
+        if (m_row_index[i+1] % m_m == row &&
+        m_col_index[i] == col){
+
+            return m_values[i];
+        }
+        
+    }
+    
+
     return 0;
 } 
 
-bool CSR::operator==(const CSR & rhs) const{
+bool CSR::operator==(const CSR & src) const{
     /***********************************
      *      To be implemented
      * Note: to avoid warnings, a
@@ -176,7 +253,12 @@ bool CSR::operator==(const CSR & rhs) const{
      * a correct value.
      * ********************************/
 
-    return true;
+    /***********************************
+     * Returns true if the object is empty,
+     * otherwise returns false
+     * ********************************/
+
+    return src.empty();
 }
 
 int CSR::sparseRatio(){
@@ -187,5 +269,21 @@ int CSR::sparseRatio(){
      * your implementaion should return
      * a correct value.
      * ********************************/
-    return 0;
+
+    /***********************************
+     * Returns the sparsity ratio for the
+     * CSR object. It returns the ratio
+     * as percentage, e.g. if the ratio 
+     * is 0.656, the func returns 0.656
+     * x 100 = 65 as an integer
+     * 
+     * The number of zeros divided by the 
+     * total number of members in a matrix
+     * shows the sparsity ratio
+     * 
+     * m_m * m_n will always be the total
+     * number of members in a matrix
+     * ********************************/
+
+    return (m_m * m_n) - m_nonzeros;
 }
