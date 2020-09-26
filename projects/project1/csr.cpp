@@ -21,7 +21,6 @@ CSR::CSR(){
     int m_n = 0;//number of columns
     CSR* m_next = nullptr;//pointer to the next CSR object in linked list
 
-    cout << "CSR constructor called" << endl;
 }
 
 CSR::~CSR(){
@@ -58,22 +57,23 @@ CSR::CSR(const CSR & src){
      * CSR node
      * ********************************/
 
-    CSR newNode;
+    // CSR newNode;
 
     // init all non-pointers
-    newNode.m_nonzeros = src.m_nonzeros;
-    newNode.m_m = src.m_m;
-    newNode.m_n = src.m_n;
+    this->m_nonzeros = src.m_nonzeros;
+    this->m_m = src.m_m;
+    this->m_n = src.m_n;
     
-    // init pointers
-    newNode.m_values = new int[newNode.m_nonzeros];
-    newNode.m_col_index = new int[newNode.m_nonzeros];
-    newNode.m_row_index = new int[newNode.m_nonzeros];
+    // create pointers
+    this->m_values = new int[this->m_nonzeros];
+    this->m_col_index = new int[this->m_nonzeros];
+    this->m_row_index = new int[this->m_nonzeros];
 
-    for (int i = 0; i < newNode.m_nonzeros; i++){
-        newNode.m_values[i] = src.m_values[i];
-        newNode.m_col_index[i] = src.m_col_index[i];
-        newNode.m_row_index[i] = src.m_row_index[i];
+    // init pointers
+    for (int i = 0; i < this->m_nonzeros; i++){
+        this->m_values[i] = src.m_values[i];
+        this->m_col_index[i] = src.m_col_index[i];
+        this->m_row_index[i] = src.m_row_index[i];
     }
 }
 
@@ -130,11 +130,9 @@ bool CSR::empty() const{
     /***********************************
      * Returns true if the object is empty,
      * otherwise returns false
-     * 
-     * If either dimension is 0, then
-     * it's  an empty matrix
      * ********************************/
 
+    // if either dimensions is 0, return true
     return (m_m == 0 || m_n == 0);
 }
 
@@ -255,11 +253,27 @@ bool CSR::operator==(const CSR & src) const{
      * ********************************/
 
     /***********************************
-     * Returns true if the object is empty,
-     * otherwise returns false
+     * Equality operator, returns true if
+     * all members of two matrices are equal
      * ********************************/
 
-    return src.empty();
+    if (this->m_nonzeros != src.m_nonzeros) { return false; }
+    if (this->m_m != src.m_m) { return false; }
+    if (this->m_n != src.m_n) { return false; }
+  
+
+    for (int i = 0; i < src.m_nonzeros; i++){
+
+        if (this->m_values[i] != src.m_values[i]) { return false; }
+        if (this->m_col_index[i] != src.m_col_index[i]) { return false; }    
+    }
+
+    for (int i = 0; i < m_m+1; i++){
+
+        if (this->m_row_index[i] != src.m_row_index[i]) { return false; }
+    }
+
+    return true;
 }
 
 int CSR::sparseRatio(){
