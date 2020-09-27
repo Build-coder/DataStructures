@@ -15,6 +15,38 @@ CSRList::CSRList(){
     m_size = 0;
 }
 
+CSRList::CSRList(const CSRList & src){
+    /***********************************
+     *      To be implemented
+     * ********************************/
+
+    /***********************************
+     * Copy constructor, creates a new 
+     * CSRList object from src.
+     * 
+     * Note: If we simply use 
+     * insertAtHead(...) to make insertion, 
+     * the new list will be reversed. That
+     * is not what we need. Copy constructor
+     * makes an exact copy of rhs, i.e the
+     * order of the CSR objects should be 
+     * the same as src
+     * **********************************/
+
+    // store & of source list's first node in curr
+    CSR* curr = src.m_head;
+
+    // while first node doesn't equal nullptr
+    while (curr != nullptr)
+    {
+        // insert new node into list
+        this->insertAtHead(*curr);
+        // iterate to next node
+        curr = curr->m_next;
+    }
+
+}
+
 CSRList::~CSRList(){
     /***********************************
      *      To be implemented
@@ -52,7 +84,7 @@ bool CSRList::empty() const{
 
 
     /***********************************
-     * Returns true if the object is
+     * Returns true if the list is
      * empty, otherwise returns false
      * ********************************/
     return (m_head == nullptr) && (m_size == 0);
@@ -67,23 +99,16 @@ void CSRList::insertAtHead(const CSR & matrix){
      * Inserts the CSR object at the head 
      * of the CSRList object
      * ********************************/
+
+    /* 1. allocate node */
+    /* 2. put in the data */
     CSR* newPtr = new CSR(matrix);
-    CSR* tempPtr;
-
-    if (m_head == nullptr){
-        m_head = newPtr;
-        m_size++;
-    }
-    else{
-        tempPtr = m_head;
-
-        while ( tempPtr->m_next != nullptr ) {
-            tempPtr = tempPtr->m_next;
-            m_size++;
-        }
-        tempPtr->m_next = newPtr;
-    }
-
+  
+    /* 3. Make next of new node as head */
+    newPtr->m_next = m_head;  
+  
+    /* 4. move the head to point to the new node */
+    m_head = newPtr;  
 }
 
 void CSRList::clear(){
@@ -140,7 +165,7 @@ int CSRList::getAt(int CSRIndex, int row, int col) const{
         i++;  
     }
     
-    return NULL;
+    return 911;
 }
 
 
@@ -157,7 +182,7 @@ void CSRList::dump(){
 }
 
 
-bool CSRList::operator== (const CSRList & rhs) const{
+bool CSRList::operator== (const CSRList & src) const{
     /***********************************
      *      To be implemented
      * Note: to avoid warnings, a
@@ -173,17 +198,19 @@ bool CSRList::operator== (const CSRList & rhs) const{
      * returns false
      * ********************************/
 
-    CSR* source = rhs.m_head;
-    CSR* curr = m_head;
+    CSR* curr = src.m_head;
+    CSR* temp = m_head;
 
     while (curr != nullptr){
 
-        for (int i = 0; i < curr->m_nonzeros; i++){
-            
-            if (curr->m_values[i] != source->m_values[i]){
+        if (temp == curr) { 
 
-                return false;
-            } 
+            curr = curr->m_next; 
+            temp = temp->m_next;
+
+        } else { 
+
+            return false; 
         }
     }
     
@@ -208,14 +235,14 @@ const CSRList& CSRList::operator=(const CSRList & src){
         CSR* curr = m_head;
 
         while(m_head != nullptr){
-        // move tracker to next node
-        m_head = m_head->m_next;
-        // delete prev node
-        delete curr;
-        // set curr to nullptr
-        curr = nullptr;
-        // set curr to m_head node
-        curr = m_head;
+            // move tracker to next node
+            m_head = m_head->m_next;
+            // delete prev node
+            delete curr;
+            // set curr to nullptr
+            curr = nullptr;
+            // set curr to m_head node
+            curr = m_head;
         }
 
         m_head = nullptr;

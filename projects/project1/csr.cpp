@@ -13,13 +13,13 @@ CSR::CSR(){
      * any memory allocated
      * ********************************/
 
-    int* m_values = nullptr;//array to store non-zero values
-    int* m_col_index = nullptr;//array to store column indices
-    int* m_row_index = nullptr;//array to store row indices 
-    int m_nonzeros = 0;//number of non-zero values
-    int m_m = 0;//number of rows
-    int m_n = 0;//number of columns
-    CSR* m_next = nullptr;//pointer to the next CSR object in linked list
+    m_values = nullptr;//array to store non-zero values
+    m_col_index = nullptr;//array to store column indices
+    m_row_index = nullptr;//array to store row indices 
+    m_nonzeros = 0;//number of non-zero values
+    m_m = 0;//number of rows
+    m_n = 0;//number of columns
+    m_next = nullptr;//pointer to the next CSR object in linked list
 
 }
 
@@ -57,23 +57,24 @@ CSR::CSR(const CSR & src){
      * CSR node
      * ********************************/
 
-    // CSR newNode;
-
     // init all non-pointers
-    this->m_nonzeros = src.m_nonzeros;
-    this->m_m = src.m_m;
-    this->m_n = src.m_n;
+    m_nonzeros = src.m_nonzeros;
+    m_m = src.m_m;
+    m_n = src.m_n;
     
     // create pointers
-    this->m_values = new int[this->m_nonzeros];
-    this->m_col_index = new int[this->m_nonzeros];
-    this->m_row_index = new int[this->m_nonzeros];
+    m_values = new int[m_nonzeros];
+    m_col_index = new int[m_nonzeros];
+    m_row_index = new int[m_nonzeros];
 
     // init pointers
-    for (int i = 0; i < this->m_nonzeros; i++){
-        this->m_values[i] = src.m_values[i];
-        this->m_col_index[i] = src.m_col_index[i];
-        this->m_row_index[i] = src.m_row_index[i];
+    for (int i = 0; i < m_nonzeros; i++){
+        m_values[i] = src.m_values[i];
+        m_col_index[i] = src.m_col_index[i];
+    }
+
+    for (int i = 0; i < m_m+1; i++){
+        m_row_index[i] = src.m_row_index[i];
     }
 }
 
@@ -161,7 +162,7 @@ void CSR::compress(int m, int n, int array[], int arraySize){
 
     m_values = new int[m_nonzeros];
     m_col_index = new int[m_nonzeros];
-    m_row_index = new int[m_nonzeros];
+    m_row_index = new int[m_m+1];
 
     // store values at 0 index
     int var = 0;
@@ -257,20 +258,20 @@ bool CSR::operator==(const CSR & src) const{
      * all members of two matrices are equal
      * ********************************/
 
-    if (this->m_nonzeros != src.m_nonzeros) { return false; }
-    if (this->m_m != src.m_m) { return false; }
-    if (this->m_n != src.m_n) { return false; }
+    if (m_nonzeros != src.m_nonzeros) { return false; }
+    if (m_m != src.m_m) { return false; }
+    if (m_n != src.m_n) { return false; }
   
 
     for (int i = 0; i < src.m_nonzeros; i++){
 
-        if (this->m_values[i] != src.m_values[i]) { return false; }
-        if (this->m_col_index[i] != src.m_col_index[i]) { return false; }    
+        if (m_values[i] != src.m_values[i]) { return false; }
+        if (m_col_index[i] != src.m_col_index[i]) { return false; }    
     }
 
     for (int i = 0; i < m_m+1; i++){
 
-        if (this->m_row_index[i] != src.m_row_index[i]) { return false; }
+        if (m_row_index[i] != src.m_row_index[i]) { return false; }
     }
 
     return true;
@@ -301,11 +302,11 @@ int CSR::sparseRatio(){
      * ********************************/
 
     // total number of members
-    int total_mems = m_m * m_n;
+    int total_members = m_m * m_n;
 
     // total number of zeros
-    int total_zeros = total_mems - m_nonzeros;
+    int total_zeros = total_members - m_nonzeros;
 
     // return ratio as a percentage
-    return (total_zeros / total_mems) * 100;
+    return (total_zeros / total_members) * 100;
 }

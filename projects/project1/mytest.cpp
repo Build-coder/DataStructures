@@ -77,6 +77,38 @@ int main(){
 
     cout << endl;
 
+    cout << "Contents of aCSR are dumped below:" << endl;
+
+    aCSR.dump();
+
+    cout << endl;
+
+    cout << "Contents of bCSR are dumped below:" << endl;
+
+    bCSR.dump();
+
+    cout << endl;
+
+    /**********************************************************
+     * Create a bunch of CSR objects to later link together
+     * to create a list
+     * *******************************************************/
+
+    // CSR nodes
+    CSR cCSR;
+    CSR dCSR;
+    CSR eCSR;
+
+    // arrays to store in CSR objects
+    int array2[] = {0,0,0,0,100,200,0,0,300};
+    int array3[] = {0,0,0,0,5,8,0,0,0,0,3,0,0,6,0,0};
+    int array4[] = {0,0,0,0,0,0,0,0,2,0,3,0,0,6,0,0};
+
+    // init nodes
+    cCSR.compress(3, 3, array2, 9);
+    dCSR.compress(4, 4, array3, 16);
+    eCSR.compress(2, 8, array4, 16);
+
 
     cout << "\n/**************************************************/\n" <<
     "/********TESTING COPY CONSTRUCTOR of CSRList*******/\n" <<
@@ -84,21 +116,25 @@ int main(){
 
     // create list
     CSRList aCSRList;
-    CSRList bCSRList;
 
     /**** init list here ******/
+    aCSRList.insertAtHead(cCSR);
+    aCSRList.insertAtHead(dCSR);
+    aCSRList.insertAtHead(eCSR);
 
     /**** call list copy constructor here *****/
 
+    CSRList bCSRList(aCSRList);
+
     // test to check if CSR objects are copies of one another
-    if (testValuesEQ(aCSRList,bCSRList)) cout << endl << "CSR objects are" <<
+    if (testValuesEQ(aCSRList,bCSRList)) cout << endl << "CSR lists are" <<
     " copies" << endl;
-    else cout << endl << "CSR objects are not copies" << endl;
+    else cout << endl << "CSR lists are not copies" << endl;
 
     // test to check if copies are deep or shallow
-    if (testAddressNEQ(aCSRList,bCSRList)) cout << endl << "CSR objects are" <<
+    if (testAddressNEQ(aCSRList,bCSRList)) cout << endl << "CSR lists are" <<
     " deep copies" << endl;
-    else cout << endl << "CSR objects are shallow copies" << endl;
+    else cout << endl << "CSR lists are shallow copies" << endl;
 
 
     cout << endl;
@@ -116,42 +152,57 @@ int main(){
     /**** call assignment oper here ****/
 
     // test to check if CSR objects are copies of one another
-    if (testValuesEQ(aCSRList,bCSRList)) cout << endl << "CSR objects are" <<
+    if (testValuesEQ(aCSRList,bCSRList)) cout << endl << "CSR lists are" <<
     " copies" << endl;
-    else cout << endl << "CSR objects are not copies" << endl;
+    else cout << endl << "CSR lists are not copies" << endl;
 
     // test to check if copies are deep or shallow
-    if (testAddressNEQ(aCSRList,bCSRList)) cout << endl << "CSR objects are" <<
+    if (testAddressNEQ(aCSRList,bCSRList)) cout << endl << "CSR lists are" <<
     " deep copies" << endl;
-    else cout << endl << "CSR objects are shallow copies" << endl;
+    else cout << endl << "CSR lists are shallow copies" << endl;
 
     cout << endl;
 
 
-    /*********************
-     * Check that clear() removes
-     * all data, leaving an empty 
-     * CSRList
-     * *******************/
+
+    cout << "Contents of aCSR list are dumped below:" << endl;
+
+    aCSRList.dump();
+
+    cout << endl;
+
+    cout << "Contents of bCSR list are dumped below:" << endl;
+
+    bCSRList.dump();
+
+    cout << endl;
+    
 
 
-    /*********************
-     * Check that the equality 
-     * operator returns the correct
-     * boolean value
-     * *******************/
+    // /*********************
+    //  * Check that clear() removes
+    //  * all data, leaving an empty 
+    //  * CSRList
+    //  * *******************/
 
-    /*********************
-     * Test compress():
-     * if user creates a matrix
-     * of 0x0 
-     * ******************/
 
-    /*********************
-     * Check that the equality 
-     * operator returns the correct
-     * boolean value
-     * *******************/
+    // /*********************
+    //  * Check that the equality 
+    //  * operator returns the correct
+    //  * boolean value
+    //  * *******************/
+
+    // /*********************
+    //  * Test compress():
+    //  * if user creates a matrix
+    //  * of 0x0 
+    //  * ******************/
+
+    // /*********************
+    //  * Check that the equality 
+    //  * operator returns the correct
+    //  * boolean value
+    //  * *******************/
     
 
     return 0;
