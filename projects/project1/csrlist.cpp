@@ -32,15 +32,19 @@ CSRList::CSRList(const CSRList & src){
      * order of the CSR objects should be 
      * the same as src
      * **********************************/
+
+    // init m_size and m_head 
+    m_size = 0;
+    m_head = nullptr;
   
-    // make a copy of src.m_head
+    // make copies (don't want to change m_head when it's set)
     CSR* curr = src.m_head; // to iter through src list
     CSR* temp = nullptr; // to iter through "this" list
 
     // iter through src list
     while (curr != nullptr){
 
-        // create new node. init with curr src node
+        // create new node && init with curr src node
         CSR* newPtr = new CSR(*curr);
         m_size++;
 
@@ -54,7 +58,7 @@ CSRList::CSRList(const CSRList & src){
 
         } else {
 
-            // save prev node's next as & of new node
+            // save prev node's next as addr of new node
             temp->m_next = newPtr;
             // move temp poiner to curr node in "this" list
             temp = newPtr;
@@ -253,43 +257,42 @@ const CSRList& CSRList::operator=(const CSRList & src){
          * Delete Data
          * ***********/
 
-        CSR* curr = m_head;
-
-        while(m_head != nullptr){
-            // move tracker to next node
-            m_head = m_head->m_next;
-            // delete prev node
-            delete curr;
-            // set curr to nullptr
-            curr = nullptr;
-            // set curr to m_head node
-            curr = m_head;
-        }
-
-        m_head = nullptr;
+        clear();
 
         /**************
          * Copy Data
          * ***********/
 
-        CSR* source = src.m_head;
-        int i = 0;
+        // make copies (don't want to change m_head when it's set)
+        CSR* curr = src.m_head; // to iter through src list
+        CSR* temp = nullptr; // to iter through "this" list
 
-        while(source != nullptr) {
-        
-            curr->m_values[i] = source->m_values[i];
-            curr->m_col_index[i] = source->m_col_index[i];
-            curr->m_row_index[i] = source->m_row_index[i];
-            curr->m_nonzeros = source->m_nonzeros;
-            curr->m_m = source->m_m;
-            curr->m_n = source->m_n;
+        // iter through src list
+        while (curr != nullptr){
 
+            // create new node && init with curr src node
+            CSR* newPtr = new CSR(*curr);
             m_size++;
-            i++;
-        }
 
-        //iterate to next node
-        source = source->m_next;
+            // if creating first node...
+            if (m_size == 1){
+
+                // save m_head as ref point
+                m_head = newPtr;
+                // make a copy of m_head
+                temp = m_head;
+
+            } else {
+
+                // save prev node's next as addr of new node
+                temp->m_next = newPtr;
+                // move temp poiner to curr node in "this" list
+                temp = newPtr;
+            }
+
+            // iter to next node in src list
+            curr = curr->m_next;
+        }
     }
     
     return *this;

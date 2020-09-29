@@ -98,16 +98,27 @@ int main(){
     CSR cCSR;
     CSR dCSR;
     CSR eCSR;
+    CSR fCSR;
+    CSR gCSR;
+    CSR hCSR;
 
     // arrays to store in CSR objects
     int array2[] = {0,0,0,0,100,200,0,0,300};
     int array3[] = {0,0,0,0,5,8,0,0,0,0,3,0,0,6,0,0};
     int array4[] = {0,0,0,0,0,0,0,0,2,0,3,0,0,6,0,0};
+    int array5[] = {0,0,0,0,0,0,1,1};
+    int array6[] = {10,3,8,0,0,0};
+    int array7[] = {0,0,1,2};
+    
 
     // init nodes
     cCSR.compress(3, 3, array2, 9);
     dCSR.compress(4, 4, array3, 16);
     eCSR.compress(2, 8, array4, 16);
+
+    fCSR.compress(4, 2, array5, 8);
+    gCSR.compress(3, 2, array6, 6);
+    hCSR.compress(2, 2, array7, 4);
 
 
     cout << "\n/**************************************************/\n" <<
@@ -123,7 +134,6 @@ int main(){
     aCSRList.insertAtHead(eCSR);
 
     /**** call list copy constructor here *****/
-
     CSRList bCSRList(aCSRList);
 
     // test to check if CSR objects are copies of one another
@@ -139,32 +149,6 @@ int main(){
 
     cout << endl;
 
-   
-
-    cout << "\n/**************************************************/\n" <<
-    "/*******TESTING Assignment Operator of CSRList*****/\n" <<
-    "/**************************************************/\n";
-
-    /**** create list here ****/
-
-    /**** init list here ****/
-
-    /**** call assignment oper here ****/
-
-    // test to check if CSR objects are copies of one another
-    if (testValuesEQ(aCSRList,bCSRList)) cout << endl << "CSR lists are" <<
-    " copies" << endl;
-    else cout << endl << "CSR lists are not copies" << endl;
-
-    // test to check if copies are deep or shallow
-    if (testAddressNEQ(aCSRList,bCSRList)) cout << endl << "CSR lists are" <<
-    " deep copies" << endl;
-    else cout << endl << "CSR lists are shallow copies" << endl;
-
-    cout << endl;
-
-
-
     cout << "Contents of aCSR list are dumped below:" << endl;
 
     aCSRList.dump();
@@ -174,6 +158,54 @@ int main(){
     cout << "Contents of bCSR list are dumped below:" << endl;
 
     bCSRList.dump();
+
+    cout << endl;
+
+   
+
+    cout << "\n/**************************************************/\n" <<
+    "/*******TESTING Assignment Operator of CSRList*****/\n" <<
+    "/**************************************************/\n";
+
+    /**** create lists here ****/
+    CSRList cCSRList;
+    CSRList dCSRList;
+
+    /**** init lists here ****/
+    cCSRList.insertAtHead(fCSR);
+    cCSRList.insertAtHead(gCSR);
+    cCSRList.insertAtHead(hCSR);
+    
+    dCSRList.insertAtHead(cCSR);
+    dCSRList.insertAtHead(dCSR);
+    dCSRList.insertAtHead(eCSR);
+
+    /**** call assignment oper here ****/
+    dCSRList = cCSRList;
+
+    // test to check if CSR objects are copies of one another
+    if (testValuesEQ(cCSRList,dCSRList)) cout << endl << "CSR lists are" <<
+    " copies" << endl;
+    else cout << endl << "CSR lists are not copies" << endl;
+
+    // test to check if copies are deep or shallow
+    if (testAddressNEQ(cCSRList,dCSRList)) cout << endl << "CSR lists are" <<
+    " deep copies" << endl;
+    else cout << endl << "CSR lists are shallow copies" << endl;
+
+    cout << endl;
+
+
+
+    cout << "Contents of dCSR list are dumped below:" << endl;
+
+    cCSRList.dump();
+
+    cout << endl;
+
+    cout << "Contents of cCSR list are dumped below:" << endl;
+
+    dCSRList.dump();
 
     cout << endl;
     
