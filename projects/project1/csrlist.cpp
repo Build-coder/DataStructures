@@ -32,19 +32,37 @@ CSRList::CSRList(const CSRList & src){
      * order of the CSR objects should be 
      * the same as src
      * **********************************/
+  
+    // make a copy of src.m_head
+    CSR* curr = src.m_head; // to iter through src list
+    CSR* temp = nullptr; // to iter through "this" list
 
-    // store & of source list's first node in curr
-    CSR* curr = src.m_head;
+    // iter through src list
+    while (curr != nullptr){
 
-    // while first node doesn't equal nullptr
-    while (curr != nullptr)
-    {
-        // insert new node into list
-        this->insertAtHead(*curr);
-        // iterate to next node
+        // create new node. init with curr src node
+        CSR* newPtr = new CSR(*curr);
+        m_size++;
+
+        // if creating first node...
+        if (m_size == 1){
+
+            // save m_head as ref point
+            m_head = newPtr;
+            // make a copy of m_head
+            temp = m_head;
+
+        } else {
+
+            // save prev node's next as & of new node
+            temp->m_next = newPtr;
+            // move temp poiner to curr node in "this" list
+            temp = newPtr;
+        }
+
+        // iter to next node in src list
         curr = curr->m_next;
     }
-
 }
 
 CSRList::~CSRList(){
@@ -105,10 +123,13 @@ void CSRList::insertAtHead(const CSR & matrix){
     CSR* newPtr = new CSR(matrix);
   
     /* 3. Make next of new node as head */
+    // connect new node to m_head
     newPtr->m_next = m_head;  
   
     /* 4. move the head to point to the new node */
+    // make new node m_head
     m_head = newPtr;  
+    m_size++;
 }
 
 void CSRList::clear(){
