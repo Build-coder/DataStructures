@@ -137,14 +137,6 @@ void CSRList::insertAtHead(const CSR & matrix){
 }
 
 void CSRList::clear(){
-    /***********************************
-     *      To be implemented
-     * ********************************/
-
-    /***********************************
-     * Resets the CSRList object to its
-     * initial, empty state
-     * ********************************/
 
     CSR* nodePtr = m_head;
 
@@ -156,6 +148,7 @@ void CSRList::clear(){
     m_head = nullptr;
     m_size = 0;
 
+    
 }
 
 int CSRList::getAt(int CSRIndex, int row, int col) const{
@@ -228,7 +221,7 @@ bool CSRList::operator== (const CSRList & src) const{
 
     while (curr != nullptr){
 
-        if (temp == curr) { 
+        if (*temp == *curr) { 
 
             curr = curr->m_next; 
             temp = temp->m_next;

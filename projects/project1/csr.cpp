@@ -145,66 +145,86 @@ void CSR::compress(int m, int n, int array[], int arraySize){
     m_m = m;
     m_n = n;
 
-    // init m_nonzeros (size of new arrays)
-    for (int i = 0; i < arraySize; i++){
+    // if bot m_m and m_n are 0, then create an empty matrix
+    if(m == 0 || n == 0){
 
-        if (array[i] != 0){
-            m_nonzeros++;
-        }
-    }
+        m_values = nullptr;//array to store non-zero values
+        m_col_index = nullptr;//array to store column indices
+        m_row_index = nullptr;//array to store row indices 
+        m_nonzeros = 0;//number of non-zero values
+        m_m = 0;//number of rows
+        m_n = 0;//number of columns
+        m_next = nullptr;//pointer to the next CSR object in linked list 
+
+    } else {
     
 
-    /***********************************
-     * Create new arrays to store values
-     * Save new arrays memory addresses
-     * in member vars (int pointers)
-     * ********************************/
+        // init m_nonzeros (size of new arrays)
+        for (int i = 0; i < arraySize; i++){
 
-    m_values = new int[m_nonzeros];
-    m_col_index = new int[m_nonzeros];
-    m_row_index = new int[m_m+1];
-
-    // store values at 0 index
-    int var = 0;
-    int row = 0;
-
-    // init m_values, m_col_index, and m_row_index
-    for (int i = 0; i < arraySize; i++){
-
-        // for each new row of matrix...
-        if (i % n == 0){
-
-            // if first row, set m_row to 0
-            if (i == 0) {
-                m_row_index[0] = 0;
-
-            // otherwise, set m_row to # of values found
-            } else {
-                row++;
-                m_row_index[row] = var;
+            if (array[i] != 0){
+                m_nonzeros++;
             }
         }
+        
 
-        // for each nonzero value...
-        if (array[i] != 0){
+        /***********************************
+         * Create new arrays to store values
+         * Save new arrays memory addresses
+         * in member vars (int pointers)
+         * ********************************/
 
-            // save nonzero values to m_values 
-            m_values[var] = array[i];
+        m_values = new int[m_nonzeros];
+        m_col_index = new int[m_nonzeros];
+        m_row_index = new int[m_m+1];
 
-            // save col indices to m_col_index 
-            m_col_index[var] = i % n;
-            
-            // increment var to access next open index
-            var++;       
-        }
+        // store values at 0 index
+        int var = 0;
+        int row = 0;
 
-        // if last row
-        if (i+1 == arraySize){
+        try {
 
-            row++;
-            m_row_index[row] = var;
-        }
-    }   
+            // init m_values, m_col_index, and m_row_index
+            for (int i = 0; i < arraySize; i++){
+
+                // for each new row of matrix...
+                if (i % n == 0){
+
+                    // if first row, set m_row to 0
+                    if (i == 0) {
+                        m_row_index[0] = 0;
+
+                    // otherwise, set m_row to # of values found
+                    } else {
+                        row++;
+                        m_row_index[row] = var;
+                    }
+                }
+
+                // for each nonzero value...
+                if (array[i] != 0){
+
+                    // save nonzero values to m_values 
+                    m_values[var] = array[i];
+
+                    // save col indices to m_col_index 
+                    m_col_index[var] = i % n;
+                    
+                    // increment var to access next open index
+                    var++;       
+                }
+
+                // if last row
+                if (i+1 == arraySize){
+
+                    row++;
+                    m_row_index[row] = var;
+                }
+            }
+        }  catch (exception &e) {
+            cout << e.what() << endl;
+        } 
+    }
 }
 
 int CSR::getAt(int row, int  col) const{
