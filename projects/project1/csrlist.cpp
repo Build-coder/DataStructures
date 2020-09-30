@@ -147,8 +147,6 @@ void CSRList::clear(){
 
     m_head = nullptr;
     m_size = 0;
-
-    
 }
 
 int CSRList::getAt(int CSRIndex, int row, int col) const{

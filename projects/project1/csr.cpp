@@ -144,7 +144,7 @@ void CSR::compress(int m, int n, int array[], int arraySize){
 
     m_m = m;
     m_n = n;
-
+    
     // if bot m_m and m_n are 0, then create an empty matrix
     if(m == 0 || n == 0){
 
@@ -184,47 +184,151 @@ void CSR::compress(int m, int n, int array[], int arraySize){
 
         try {
 
-            // init m_values, m_col_index, and m_row_index
-            for (int i = 0; i < arraySize; i++){
+            // fill in extra space with 0's
+            if (arraySize < m*n){
+                cout << "Array size is smaller" << endl;
 
-                // for each new row of matrix...
-                if (i % n == 0){
+                // init m_values, m_col_index, and m_row_index
+                for (int i = 0; i < m*n; i++){
 
-                    // if first row, set m_row to 0
-                    if (i == 0) {
-                        m_row_index[0] = 0;
+                    // for each new row of matrix...
+                    if (i % n == 0){
 
-                    // otherwise, set m_row to # of values found
-                    } else {
+                        // if first row, set m_row to 0
+                        if (i == 0) {
+                            m_row_index[0] = 0;
+
+                        // otherwise, set m_row to # of values found
+                        } else {
+                            row++;
+                            m_row_index[row] = var;
+                        }
+                    }
+
+                    // for each nonzero value...
+                    if (array[i] != 0){
+
+                        // save nonzero values to m_values 
+                        m_values[var] = array[i];
+
+                        // save col indices to m_col_index 
+                        m_col_index[var] = i % n;
+                        
+                        // increment var to access next open index
+                        var++;       
+                    }
+
+                    // if last row
+                    if (i+1 == arraySize){
+
                         row++;
                         m_row_index[row] = var;
                     }
                 }
+            }
 
-                // for each nonzero value...
-                if (array[i] != 0){
+            // ignore extra space
+            else if (arraySize > m*n){
+                cout << "Array size is larger" << endl;
 
-                    // save nonzero values to m_values 
-                    m_values[var] = array[i];
+                // init m_values, m_col_index, and m_row_index
+                for (int i = 0; i < arraySize; i++){
 
-                    // save col indices to m_col_index 
-                    m_col_index[var] = i % n;
-                    
-                    // increment var to access next open index
-                    var++;       
-                }
+                    // for each new row of matrix...
+                    if (i % n == 0){
 
-                // if last row
-                if (i+1 == arraySize){
+                        // if first row, set m_row to 0
+                        if (i == 0) {
+                            m_row_index[0] = 0;
 
-                    row++;
-                    m_row_index[row] = var;
+                        // otherwise, set m_row to # of values found
+                        } else {
+                            row++;
+                            m_row_index[row] = var;
+                        }
+                    }
+
+                    // for each nonzero value...
+                    if (array[i] != 0){
+
+                        // save nonzero values to m_values 
+                        m_values[var] = array[i];
+
+                        // save col indices to m_col_index 
+                        m_col_index[var] = i % n;
+                        
+                        // increment var to access next open index
+                        var++;       
+                    }
+
+                    // if last row
+                    if (i+1 == arraySize){
+
+                        row++;
+                        m_row_index[row] = var;
+                    }
                 }
             }
-        }  catch (exception &e) {
+
+            else if (m_nonzeros == 0){
+                cout << "Array has no members" << endl;
+
+                m_nonzeros = 0;
+
+                // init m_values, m_col_index, and m_row_index
+                for (int i = 0; i < m*n; i++){
+
+                    m_values[i] = 0;
+                    m_col_index = nullptr;
+                    m_row_index = nullptr;
+                }
+            }
+
+            else{
+                // init m_values, m_col_index, and m_row_index
+                for (int i = 0; i < m*n; i++){
+
+                    // for each new row of matrix...
+                    if (i % n == 0){
+
+                        // if first row, set m_row to 0
+                        if (i == 0) {
+                            m_row_index[0] = 0;
+
+                        // otherwise, set m_row to # of values found
+                        } else {
+                            row++;
+                            m_row_index[row] = var;
+                        }
+                    }
+
+                    // for each nonzero value...
+                    if (array[i] != 0){
+
+                        // save nonzero values to m_values 
+                        m_values[var] = array[i];
+
+                        // save col indices to m_col_index 
+                        m_col_index[var] = i % n;
+                        
+                        // increment var to access next open index
+                        var++;       
+                    }
+
+                    // if last row
+                    if (i+1 == arraySize){
+
+                        row++;
+                        m_row_index[row] = var;
+                    }
+                }
+            }
+
+        } catch (exception &e) {
             cout << e.what() << endl;
         } 
-    }
+    
+    }           
 }
 
 int CSR::getAt(int row, int  col) const{

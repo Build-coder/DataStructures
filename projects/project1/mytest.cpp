@@ -104,6 +104,7 @@ int main(){
     int array5[] = {0,0,0,0,0,0,1,1};
     int array6[] = {10,3,8,0,0,0};
     int array7[] = {0,0,1,2};
+    int array8[] = {};
     
 
     // init nodes
@@ -280,23 +281,20 @@ int main(){
     
 
     /***************************************************
-     * Test compress():
-     * if user creates a matrix
-     * of 0x0 
      * 
-     * In constructing a CSR object... 
+     * Test compress():
      * 
      * if the number of data members in the input array 
      * is less than (m x n), the constructor uses the 
      * array to initialize the matrix, and the rest of 
      * matrix members will be initialized to zero. 
      * 
-     * If the number of data members in the input array is 
+     * if the number of data members in the input array is 
      * greater than (m x n), the constructor uses 
      * the array to initialize the matrix, and the 
      * rest of array data will be ignored. 
      * 
-     * If the user decides to make a 0 x 0 matrix, that would 
+     * if the user decides to make a 0 x 0 matrix, that would 
      * be considered an empty object, even if user 
      * provides data in the array. 
      * 
@@ -307,11 +305,42 @@ int main(){
     cout << "\n/**************************************************/\n" <<
     "/********TESTING Compress 0x0 Matrix Input*********/\n" <<
     "/**************************************************/\n";
-    
+
+    // test for arraySize < m*n
+    cout << "Test for array size < m*n: ";
+    aCSR.compress(6, 4, array1, 20);
+
+    cout << "\nBelow are the contents of a matrix with dimensions\n" <<
+    "greater than it's array size:" << endl;
+
+    aCSR.dump();
+    cout << endl;
+
+    // test for arraySize > m*n
+    cout << "Test for array size > m*n: ";
+    aCSR.compress(6, 4, array1, 30);
+
+    cout << "\nBelow are the contents of a matrix with dimensions\n" <<
+    "less than it's array size:" << endl;
+
+    aCSR.dump();
+    cout << endl;
+
+    // test for empty matrix
+    cout << "Test for empty matrix: ";
     aCSR.compress(0, 0, array1, 24);
 
     cout << "\nBelow are the contents of a matrix with at least one\n" <<
-    "of it's dimensions as 0" << endl;
+    "of it's dimensions as 0:" << endl;
+
+    aCSR.dump();
+    cout << endl;
+
+    // test for matrix with no members
+    cout << "Test for matrix with no members: ";
+    aCSR.compress(4, 2, array8, 8);
+
+    cout << "\nBelow are the contents of a matrix with no members:\n";
 
     aCSR.dump();
     cout << endl;
