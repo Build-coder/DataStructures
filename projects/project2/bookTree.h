@@ -2,9 +2,13 @@
 #define BOOKTREE_H
 #include "bNode.h"
 class Grader;//for grading purposes
+
 class BookTree{
+
     public:
+
         friend class Grader;//for grading purposes
+        
         BookTree();
         ~BookTree();
         void dump(bool verbose=false) const;
@@ -23,6 +27,7 @@ class BookTree{
         * your public member functions end here
         * *************************************************************/
     private:
+    
         BNode* _root;
         bool insert(string key, string author, string text);
         BNode* makeSplay(BNode* root, string key);

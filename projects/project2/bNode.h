@@ -11,10 +11,14 @@
 using namespace std;
 class Grader;//for grading purposes
 class BookTree;
+
 class BNode{
+
     friend class BookTree;
+
     public:
         friend class Grader;//for grading purposes
+        
         BNode();
         BNode(string key, string author, string text);
         ~BNode();
@@ -22,6 +26,7 @@ class BNode{
         int searchCount(string word);//returns the number of operations for a search in AVL tree
         int getTextTreeHeight();//returns the height of _tree
         int getNodeHeight(string word);//returns height of a node in _tree
+
     private:
         void createTextTree(string text);
         string _key;//stores the title of the book
