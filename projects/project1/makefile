@@ -19,6 +19,10 @@ clean:
 		rm *~
 		rm *output*
 
+rm_h:
+
+		rm *.h
+
 run:
 		./proj1
 
