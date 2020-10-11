@@ -1,19 +1,19 @@
 CXX = g++
 CXXFLAGS = -Wall -g -fmax-errors=1
 
-proj2: bNode.o wordTree.o bookTree.o driver.cpp
-		$(CXX) $(CXXFLAGS) bNode.o wordTree.o bookTree.o driver.cpp -o proj2		
+proj2: bNode.o wordTree.o bookTree.o myTest.cpp
+		$(CXX) $(CXXFLAGS) bNode.o wordTree.o bookTree.o myTest.cpp -o proj2
 
 # splay tree
-bookTree.o: bookTree.h bookTree.cpp wordTree.o
+bookTree.o: bookTree.h bookTree.cpp bNode.o
 		$(CXX) $(CXXFLAGS) -c bookTree.cpp
 
 # avl tree
-wordTree.o: wordTree.h wordTree.cpp bNode.o
-		$(CXX) $(CXXFLAGS) -c wordTree.cpp
-
-bNode.o: bNode.h bNode.cpp
+bNode.o: bNode.h bNode.cpp wordTree.o
 		$(CXX) $(CXXFLAGS) -c bNode.cpp
+
+wordTree.o: wordTree.h wordTree.cpp
+		$(CXX) $(CXXFLAGS) -c wordTree.cpp
 
 clean:
 

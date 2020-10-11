@@ -18,6 +18,7 @@ WordTree::~WordTree(){
      * Destructor deallocates all 
      * dynamically created memory
      * ********************************/
+    clearTree(_root);
 }
 
 void WordTree::updateHeight(Node *aNode) {
@@ -32,6 +33,20 @@ void WordTree::updateHeight(Node *aNode) {
      *       lowest level nodes with a key
      *       value hold the height of 0
      * ********************************/
+        if (aNode == nullptr){ return; }
+        int leftHeight = -1;
+        int rightHeight = -1;
+        if (aNode->_left != nullptr){
+            leftHeight = aNode->_left->_height;
+        }
+        if (aNode->_right != nullptr){
+            rightHeight = aNode->_right->_height;
+        }
+        if (leftHeight > rightHeight){
+            aNode->_height = 1 + leftHeight;
+        } else{
+            aNode->_height = 1 + rightHeight;
+        }
 }
 
 void WordTree::clearTree(Node* aNode){
@@ -40,7 +55,16 @@ void WordTree::clearTree(Node* aNode){
      * 
      * This function deallocates all 
      * memory in the AVL tree recursively
+     * 
+     * 
      * ********************************/
+    if (aNode == nullptr){
+        return;
+    } else{
+        clearTree(aNode->_left);
+        clearTree(aNode->_right);
+        delete aNode;
+    } 
 }
 
 void WordTree::inOrder(Node* aNode, std::ostream& ostr){
@@ -86,6 +110,8 @@ Node* WordTree::find(const string& element){
      * This function finds a node using 
      * the provided key and returns the node
      * ********************************/
+
+    return nullptr;
 }
 
 Node* WordTree::leftRotation(Node* aNode){
@@ -100,7 +126,14 @@ Node* WordTree::leftRotation(Node* aNode){
      * around aNode and returns the new root
      * for the current sub-tree
      * ********************************/
-    return nullptr;
+    Node* z = aNode;
+    Node* y = z->_right;
+    z->_right = y->_left;
+    y->_left = z;
+    updateHeight(z);
+    updateHeight(y);
+
+    return y;
 }
 
 Node* WordTree::rightRotation(Node* aNode){
@@ -115,7 +148,14 @@ Node* WordTree::rightRotation(Node* aNode){
      * around aNode and returns the new root
      * for the current sub-tree
      * ********************************/
-    return nullptr;
+    Node* z = aNode;
+    Node* x = z->_left;
+    z->_left = x->_right;
+    x->_right = z;
+    updateHeight(z);
+    updateHeight(x);
+
+    return x;
 }
 
 int WordTree::checkBalance(Node* aNode){
@@ -138,8 +178,31 @@ int WordTree::checkBalance(Node* aNode){
      *       hold a height of -1. The lowest
      *       level nodes with a key value
      *       hold a height of 0
+     * 
+     * 1.) Node's left child has greater height
+     * and left child of left child has a 
+     * greater height - right rotation 
+     * 
+     * 2.) Node's right child has greater height
+     * and right child of right child has a 
+     * greater height
+     * 
+     * 3.) Node's left child has greater height
+     * and right child of left child has a 
+     * greater height - left rotation about 
+     * node's left child, right rotation about
+     * node
+     * 
+     * 4.) Node's right child has greater height
+     * and left child of right child has a 
+     * greater height - right rotation about 
+     * node's right child, left rotation 
+     * about node
      * ********************************/
-    return 0;
+    if (aNode == nullptr){ return -1; }
+
+    return getNodeHeightHelp(aNode->_left, aNode->_value) 
+    - getNodeHeightHelp(aNode->_right, aNode->_value);
 }
 
 Node* WordTree::reBalance(Node* aNode){
@@ -163,8 +226,26 @@ Node* WordTree::reBalance(Node* aNode){
      * returns the new root for the current
      * sub-tree.
      * ********************************/
+    if ((checkBalance(aNode) < -1) &&
+    (checkBalance(aNode->_right) <= 0)) {
+        return leftRotation(aNode);
+
+    } else if ((checkBalance(aNode) < -1)
+    && (checkBalance(aNode->_right) >= 0)){
+        // rotation around y
+        aNode->_right = rightRotation(aNode->_right);
+        // rotation around z
+        return leftRotation(aNode); 
+    }
+
+    // other cases not implemented
+    
+    
+
+
     return nullptr;
 }
+
 
 void WordTree::insert(const string& element){
     /***********************************
@@ -177,8 +258,55 @@ void WordTree::insert(const string& element){
      * A duplicate key is not allowed. In the 
      * case of duplicate insertion we only 
      * update the word count in the node
+     * 
+     * 1.) Node's left child has greater height
+     * and left child of left child has a 
+     * greater height - right rotation 
+     * 
+     * 2.) Node's right child has greater height
+     * and right child of right child has a 
+     * greater height
+     * 
+     * 3.) Node's left child has greater height
+     * and right child of left child has a 
+     * greater height - left rotation about 
+     * node's left child, right rotation about
+     * node
+     * 
+     * 4.) Node's right child has greater height
+     * and left child of right child has a 
+     * greater height - right rotation about 
+     * node's right child, left rotation 
+     * about node
      * ********************************/
+    int balance = 0;
+    
+    // call helper insert function
+    _root = insert(element, _root);
+
+    // rebalance tree
+    balance = checkBalance(_root);
+
+    // 1.) left child has greater height
+    if (balance > 0){
+        _root = rightRotation(_root);
+        updateHeight(_root);
+
+    // 2.) right child has greater height   
+    } else if (balance < 0){
+        _root = leftRotation(_root);
+        updateHeight(_root);
+
+    // need to implement left-right
+    // and right-left
+
+    // don't rebalance    
+    } else{
+        balance = 0;
+    }
 }
+
+
 Node* WordTree::insert(const string& element, Node*& aNode){
     /***********************************
      *      To be implemented
@@ -189,13 +317,29 @@ Node* WordTree::insert(const string& element, Node*& aNode){
      * 
      * This is a helper function which is
      * called by the public insert(...)
-     * function and inserts a new node
+     * function and inserts a NEW NODE
      * with element as key. A duplicate key
      * is not allowed. In the case of duplicate
      * insertion, we only update the word count
      * in the node
      * ********************************/
-    return nullptr;
+
+    // base case
+    if (aNode == nullptr){
+        Node* newNode = new Node(element);
+        aNode = newNode;
+    // recursive call
+    } else {
+        if (element < aNode->_value){
+            aNode->_height++;
+            insert(element, aNode->_left);
+        }else{
+            aNode->_height++;
+            insert(element, aNode->_right);
+        }
+    }    
+
+    return aNode;
 }
 
 void WordTree::dump(std::ostream& ostr){
@@ -305,5 +449,7 @@ int WordTree::getNodeHeightHelp(Node* aNode, string word){
      * Note: The height of null children
      *        is -1
      * ********************************/
-    return 0;
+    if (aNode == nullptr){ return 0; }
+
+    return aNode->_height;
 }

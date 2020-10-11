@@ -9,7 +9,9 @@
 #include <vector>
 #include "wordTree.h"
 using namespace std;
+
 class Grader;//for grading purposes
+
 class BookTree;
 
 class BNode{

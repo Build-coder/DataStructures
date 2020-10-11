@@ -10,6 +10,7 @@ class Node {//stores a word from the text
     public:
 
         friend class Grader;//for grading purposes
+        
         friend class WordTree;
 
         Node(const string& v) : _value(v), 

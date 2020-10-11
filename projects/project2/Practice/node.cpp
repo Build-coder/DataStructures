@@ -61,6 +61,7 @@ int Node::getBalance(Node* N){
 
 
     if (N == nullptr){ return 0; }
+    
     return getHeight(N->left) - getHeight(N->right);
 }
 

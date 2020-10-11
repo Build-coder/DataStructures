@@ -1,0 +1,39 @@
+Here we go...
+
+Your assignment is to implement a Splay tree
+in which we can store the info about several books.
+
+The info to store is the title, author, and text.
+The text will be stored in an AVL tree. It means 
+that every node in the Splay tree has an AVL tree.
+
+The user will be able to access the text by
+searching the Splay tree for a specific title. The
+text of every book is stored as words in the AVL tree
+The user is able to search the AVL tree and collect
+some info about the text. The following presents some
+examples of queries:
+
+    - The number of occurrences of a word in a book
+    - Check whether a word is commonly used by mult
+      authors
+    - etc 
+
+You can add your own private variables and functions.
+The current private function declarations are provided
+as a backbone to help you
+
+Node instance of -> 
+WordTree instance of -> 
+BNode instance of -> 
+BookTree
+
+The class BookTree constructs a Splay tree. 
+The nodes in this tree are of type BNode
+The key for a node is the title of a book 
+
+wordTree - "BST (Binary Search Tree): Balanced" contains interface and implementation of class Node
+bNode - turns each AVL tree into a node (I think)
+bookTree - Splay tree
+
+key value: the value the root node of the tree is holding OR maybe just the value in the node
