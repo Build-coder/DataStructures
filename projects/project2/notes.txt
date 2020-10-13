@@ -37,3 +37,40 @@ bNode - turns each AVL tree into a node (I think)
 bookTree - Splay tree
 
 key value: the value the root node of the tree is holding OR maybe just the value in the node
+
+Case                                          Balanceing operation
+------------------------------------------------------------------------
+Node's right child has greater height         Left rotation
+and right child of right child has a 
+greater height
+
+aNode->right > aNode->left 
+        &&
+aNode->right->right > aNode->right->left
+------------------------------------------------------------------------
+
+Node's right child has greater height        Right rotation about Node's
+and left child of right child has a          right child, left rotation 
+greater height                               about aNode
+
+aNode->right > aNode->left 
+        &&
+aNode->right->left > aNode->right->right
+------------------------------------------------------------------------
+
+Node's left child has greater height        Right rotation
+and left child of left child has a 
+greater height
+
+aNode->left > aNode->right 
+        &&
+aNode->left->left > aNode->left->right
+------------------------------------------------------------------------
+
+Node's left child has greater height        Left rotation about node's
+and right child of left child has a         left child, right rotation
+greater height                              about node
+
+aNode->left > aNode->right 
+        &&
+aNode->left->right > aNode->left->left
