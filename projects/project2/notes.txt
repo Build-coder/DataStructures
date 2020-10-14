@@ -112,3 +112,35 @@ aNode->left->right > aNode->left->left
         leftRotation(aNode->_left);
         rightRotation(aNode);
     }
+
+    //////////////////////////////////////////
+
+    if ((checkBalance(aNode) < -1) &&
+    (checkBalance(aNode->_right) <= 0)) {
+        return leftRotation(aNode);
+
+    // if right larger and left of right 
+    // has greater height
+    } else if ((checkBalance(aNode) < -1)
+    && (checkBalance(aNode->_right) >= 0)){
+        // rotation around y
+        aNode->_right = rightRotation(aNode->_right);
+        // rotation around z
+        return leftRotation(aNode); 
+    }
+
+    // if left larger and left of right
+    // has greater height
+    else if ((checkBalance(aNode) > -1) &&
+    (checkBalance(aNode->_left) <= 0)) {
+        return rightRotation(aNode);
+
+    // if left larger and right of left 
+    // has greater height
+    } else if ((checkBalance(aNode) > -1)
+    && (checkBalance(aNode->_left) >= 0)){
+        // rotation around y
+        aNode->_left = leftRotation(aNode->_left);
+        // rotation around z
+        return rightRotation(aNode); 
+    }
