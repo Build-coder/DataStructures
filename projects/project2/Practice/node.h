@@ -15,6 +15,8 @@ class Node{
         int getBalance(Node* N);
         Node* insert(Node* node, int key);
         void preOrder(Node* root);
+        void inOrder(Node* root);
+        void postOrder(Node* root);
 
     private:
 

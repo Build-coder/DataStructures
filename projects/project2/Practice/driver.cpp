@@ -14,11 +14,30 @@ int main(){
     root = root->insert(root, 50);
     root = root->insert(root, 25);
 
+
+    // Preorder
     cout << "Preorder traversal of the "
             "constructed AVL tree is \n";
     
     root->preOrder(root);
     cout << endl << endl;
+
+
+    // Inorder
+    cout << "Inorder traversal of the "
+            "constructed AVL tree is \n";
+    
+    root->inOrder(root);
+    cout << endl << endl;
+
+
+    // Postorder
+    cout << "Postorder traversal of the "
+    "constructed AVL tree is \n";
+
+    root->postOrder(root);
+    cout << endl << endl;
+
 
     return 0;
 }

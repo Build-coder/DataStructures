@@ -43,7 +43,7 @@ Node* Node::rightRotate(Node* y){
 Node* Node::leftRotate(Node* x){
 
     Node* y = x->right;
-    Node* T2 = x->left;
+    Node* T2 = y->left;
 
     // perform rotation
     y->left = x;
@@ -69,9 +69,12 @@ Node* Node::insert(Node* node, int key){
 
     // perform normal insertion
     if (node == nullptr){ return(newNode(key)); }
-    if (key < node->key){ node->left = insert(node->left, key); }
-    else if (key > node->key){ node->right = insert(node->right, key); }
-    else { return node; }
+
+    if (key < node->key){ 
+        node->left = insert(node->left, key); 
+    } else if (key > node->key){ 
+        node->right = insert(node->right, key); 
+    } else { return node; }
 
     // update getHeight of ancestor node
     node->height = 1 + max(getHeight(node->left), getHeight(node->right));
@@ -84,10 +87,14 @@ Node* Node::insert(Node* node, int key){
     // if node became unbalanced, then there are 4 cases
     
     // left left case
-    if (balance > 1 && key < node->left->key) { return rightRotate(node); }
+    if (balance > 1 && key < node->left->key) { 
+        return rightRotate(node); 
+    }
 
     // right right case
-    if (balance < -1 && key > node->right->key) { return leftRotate(node); }
+    if (balance < -1 && key > node->right->key) { 
+        return leftRotate(node); 
+    }
 
     // left right case
     if (balance > 1 && key > node->left->key) {
@@ -114,4 +121,20 @@ void Node::preOrder(Node* root){
         preOrder(root->left);
         preOrder(root->right);
     }
-} 
+}
+
+void Node::inOrder(Node* root){
+    if (root != nullptr){
+        inOrder(root->left);
+        cout << root->key << " ";
+        inOrder(root->right);
+    }
+}
+
+void Node::postOrder(Node* root){
+    if (root != nullptr){
+        postOrder(root->left);
+        postOrder(root->right);
+        cout << root->key << " ";
+    }
+}
