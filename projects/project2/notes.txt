@@ -74,3 +74,41 @@ greater height                              about node
 aNode->left > aNode->right 
         &&
 aNode->left->right > aNode->left->left
+
+// 1.) right child has greater height
+    //      and right child of right child
+    //      has a greater height
+    if (balance < 0 &&
+    aNode->_right->_right > aNode->_right->_left){
+        // left rotation
+        leftRotation(aNode);
+
+    // 2.) right child has greater height 
+    //      and left child of right child
+    //      has a greater height  
+    } else if (balance < 0 &&
+    aNode->_right->_left > aNode->_right->_right){
+        // right rotation about node's right child
+        // left rotation about node
+
+        rightRotation(aNode->_right);
+        leftRotation(aNode);
+
+    // 3.) left child has greater height
+    //      and left child of right child 
+    //      has a greater height
+    } else if (balance > 0 &&
+    aNode->_right->_left > aNode->_right->_right){
+        // right rotation
+        rightRotation(aNode);
+    
+    // 4.) left child has greater height
+    //      and right child of left child
+    //      has a greater height
+    } else if (balance > 0 &&
+    aNode->_left->_left > aNode->_right->_right){
+        // left rotation about left's child
+        // right rotation about node
+        leftRotation(aNode->_left);
+        rightRotation(aNode);
+    }
