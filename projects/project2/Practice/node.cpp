@@ -12,7 +12,7 @@ int Node::getHeight(Node* N){
     return N->height;
 }
 
-Node* Node::newNode(int key){
+Node* Node::newNode(string key){
 
     Node* node = new Node();
     node->key = key;
@@ -65,10 +65,13 @@ int Node::getBalance(Node* N){
     return getHeight(N->left) - getHeight(N->right);
 }
 
-Node* Node::insert(Node* node, int key){
+Node* Node::insert(Node* node, string key){
 
     // perform normal insertion
-    if (node == nullptr){ return(newNode(key)); }
+    if (node == nullptr){
+        
+        return(newNode(key)); 
+    }
 
     if (key < node->key){ 
         node->left = insert(node->left, key); 

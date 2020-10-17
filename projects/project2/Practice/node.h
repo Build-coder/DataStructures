@@ -7,20 +7,21 @@ class Node{
 
     public:
 
+        // Node(const int& v): key(v), left(nullptr), right(nullptr), height(0){};
         int max(int a, int b);
         int getHeight(Node* N);
-        Node* newNode(int key);
+        Node* newNode(string key);
         Node* rightRotate(Node* y);
         Node* leftRotate(Node* x);
         int getBalance(Node* N);
-        Node* insert(Node* node, int key);
+        Node* insert(Node* node, string key);
         void preOrder(Node* root);
         void inOrder(Node* root);
         void postOrder(Node* root);
 
     private:
 
-        int key;
+        string key;
         Node* left;
         Node* right;
         int height;
