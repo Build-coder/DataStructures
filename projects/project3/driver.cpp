@@ -78,6 +78,16 @@ int main() {
 }
 
 int priorityFn1(const Patient&patient) {
+  /*******************************************************************************
+   * This function determines a priority value for the patient and returns it.
+   * The algorithm in this function is a simplified version of the algorithm
+   * that is used in ER systems. This algorithm assigns a number between 1 to 5
+   * to a patient based on the patients vital signs. The lower the value means 
+   * the higher priority in receiving treatment.
+   * 
+   * Note: The implementation of this function is provided to you. You do not 
+   *       need to modify it. 
+   * ****************************************************************************/
   int pri = 5;
   if ((patient.getOxygen()<80 && (patient.getRR() > 35 || patient.getRR() < 8)) ||
       (patient.getHR() > 130 && patient.getBP() < 80))
@@ -98,6 +108,14 @@ int priorityFn1(const Patient&patient) {
 }
 
 int priorityFn2(const Patient&patient) {
+  /*******************************************************************************
+   * This function returns the priority value that is assigned by a user, e.g. a
+   * doctor, a nurse, or a paramedic
+   * 
+   * Note: The implementation of this function is provided to you. You do not 
+   *       need to modify it. 
+   * ****************************************************************************/
+
   //priority only based on triage
   //traige is set by a health care professional
   return patient.getTriage();
